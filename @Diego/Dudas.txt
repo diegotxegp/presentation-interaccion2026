@@ -1,0 +1,6 @@
+- \begin{exampleblock}{Core Research Question} \scriptsize
+        Which criteria determine whether a pipeline decision genuinely
+        belongs to the user or to the system, and how can the
+        resulting human-automation balance be characterized in a
+        reproducible and comparable manner?
+      \end{exampleblock}

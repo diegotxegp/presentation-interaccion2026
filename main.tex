@@ -1,0 +1,770 @@
+% HCAI-HGML Inspection — Beamer Presentation
+% "Human-Centered AI Criteria for Heuristic Inspection of Guided ML Tools"
+% Compile: pdflatex main.tex  (run twice)
+% ─────────────────────────────────────────────────────────────────────────────
+\documentclass[aspectratio=169,10pt,english,dvipsnames]{beamer}
+
+\input{customizacoes}
+
+% ── Colour aliases ────────────────────────────────────────────────────────────
+\colorlet{UCblue}     {UFTblue}
+\colorlet{UCblueLight}{PROFMATgreen}
+\colorlet{UCbluePale} {UFTblue!15}
+\colorlet{UCgreen}    {UFTgreen}
+\colorlet{UCgray}     {UFTgray}
+\definecolor{UCred}   {RGB}{180,30,30}
+\definecolor{UCorange}{RGB}{210,100,0}
+
+% ── Extra TikZ libraries ──────────────────────────────────────────────────────
+\usetikzlibrary{shapes.geometric,arrows.meta}
+
+% ── Extra packages ────────────────────────────────────────────────────────────
+\usepackage{array}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{colortbl}
+
+% ── Presentation metadata ─────────────────────────────────────────────────────
+\title[HCAI Inspection of HGML Tools]{%
+  Human-Centered AI Criteria for\\
+  Heuristic Inspection of Guided ML Tools}
+
+\author[Diego García-Prieto]{%
+  Diego García-Prieto \and
+  Camilo Palazuelos \and
+  Rafael Duque\\
+  {\scriptsize\texttt{(diego.garciaprieto@unican.es)}}}
+
+\institute[University of Cantabria]{%
+  Dept.\ of Mathematics, Statistics and Computer Science
+          \textemdash{} University of Cantabria, Santander, Spain}
+
+\date{3rd September, 2026}
+
+% ── Convenience commands ──────────────────────────────────────────────────────
+\newcommand{\advisorname}{}
+\newcommand{\yes}{\textcolor{UCgreen!70!black}{\checkmark}}
+\newcommand{\no}{$\times$}
+\newcommand{\partcheck}{$\sim$}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+% ── Title slide ───────────────────────────────────────────────────────────────
+\begin{frame}
+  \titlepage
+  \vspace{-4mm}
+  \begin{center}
+    \scriptsize
+    \textit{Supported by grant PID2023-146243OB-I00 funded by MICIU/AEI and ERDF/EU}
+  \end{center}
+\end{frame}
+
+% ── Table of contents ─────────────────────────────────────────────────────────
+\begin{frame}[t]{Contents}
+  \tableofcontents
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Motivation}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Research Context} \small
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \begin{itemize}
+        \item \textbf{ML in non-technical domains}:\\
+          Domain experts need ML without requiring data science training
+
+        \item \textbf{AutoML democratization}:\\
+          Performance-first AutoML neglects transparency, user control and
+          interpretability of results
+
+        \item \textbf{HCAI paradigm}:\\
+          AI should amplify human capabilities, not replace them ---
+          yet few tools have been systematically evaluated under HCAI criteria
+
+        \item \textbf{Gap in HCI evaluation}:\\
+          Existing heuristic inspection instruments are limited to
+          classical usability criteria and do \emph{not} incorporate
+          HCAI dimensions
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \begin{block}{Two Interrelated Contributions}
+        \begin{enumerate} \scriptsize
+          \item Extension of heuristic inspection methods to HGML tools
+          via the \textbf{HCAI-HGML Compliance Matrix}
+          \item Illustrative case study applying the instrument
+          to \textbf{InsuML}, an HGML tool for non-expert users
+        \end{enumerate}
+      \end{block}
+      \vspace{4mm}
+      \begin{exampleblock}{Core Research Question} \scriptsize
+        Which criteria determine whether a pipeline decision genuinely
+        belongs to the user or to the system, and how can the
+        resulting human-automation balance be characterized in a
+        reproducible and comparable manner?
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{The Evaluation Gap} \small
+  \begin{center}
+    \begin{tikzpicture}[scale=0.80, transform shape]
+      % Left: HCI Inspection
+      \node[rectangle, draw=UCblue, fill=UCbluePale, minimum width=3.4cm,
+            minimum height=2.8cm, text width=3.2cm, align=center,
+            rounded corners=0.3cm, drop shadow, font=\small] (hci) at (0,0) {
+        \textbf{HCI}\\[1mm]\textbf{Heuristic Inspection}\\[3mm]
+        Nielsen heuristics\\Severity ratings\\Scored checklists};
+      % Right: HCAI
+      \node[rectangle, draw=UCgreen, fill=UCgreen!15, minimum width=3.4cm,
+            minimum height=2.8cm, text width=3.2cm, align=center,
+            rounded corners=0.3cm, drop shadow, font=\small] (hcai) at (9.5,0) {
+        \textbf{HCAI}\\[1mm]\textbf{Framework}\\[3mm]
+        Human control\\Computer automation\\Two independent axes};
+      % GAP
+      \node[rectangle, draw=UCorange, dashed, fill=UCorange!8,
+            minimum width=2.8cm, minimum height=2.8cm, text width=2.5cm,
+            align=center, rounded corners=0.2cm, font=\small] (gap) at (4.75,0) {
+        \textbf{GAP}\\[2mm]
+        No HCAI criteria\\in inspection\\instruments\\for HGML tools};
+      \draw[->, thick, UCblue!70] (hci.east) -- (gap.west);
+      \draw[->, thick, UCgreen!70] (hcai.west) -- (gap.east);
+      % Bridge
+      \node[rectangle, draw=UCblue, fill=UCblue, text=white,
+            minimum width=5.4cm, minimum height=0.9cm,
+            rounded corners=0.2cm, font=\small\bfseries] (matrix) at (4.75,-2.8)
+            {HCAI-HGML Compliance Matrix};
+      \draw[->, thick, UCblue!80, dashed] (matrix.north) -- (gap.south);
+      \draw[thick, UCblue!50, dashed] (matrix.west) -- +(-2.6,0) |- (hci.south);
+      \draw[thick, UCgreen!50, dashed] (matrix.east) -- +(2.6,0) |- (hcai.south);
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{What Existing Instruments Cannot Assess}
+  Current heuristic inspection instruments \textbf{cover only classical usability},
+  leaving three questions unanswered:
+  \vspace{2mm}
+  \begin{table}
+    \centering \small
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{p{5.5cm} p{5.8cm}}
+      \toprule
+      \textbf{Open Question} & \textbf{Why It Matters} \\
+      \midrule
+      Which pipeline phases should be examined?
+        & Different stages, different responsibilities \\
+      Who owns each decision --- user or system?
+        & Basis for human control scores \\
+      How to characterize the balance reproducibly?
+        & Needed to compare tools \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \vspace{2mm}
+  \begin{exampleblock}{Key findings}
+    \small Meaningful human control and appropriate automation fall
+    outside the scope of any existing inspection instrument.
+  \end{exampleblock}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Background}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Human-Centered Artificial Intelligence (HCAI)} \small
+  \begin{minipage}{0.5\textwidth}
+    \begin{block}{HCAI Framework (Shneiderman, 2022)}
+      \begin{itemize}
+        \item \textbf{Paradigm shift}:\\
+          AI should amplifies human capabilities rather than replacing them
+        \item \textbf{Two-dimensional conception}:\\
+          High automation \emph{and} high human control are
+          simultaneously achievable
+      \end{itemize}
+    \end{block}
+    \vspace{3mm}
+    \textbf{Human control criteria}:
+    ease of use · pipeline configurability · information interpretability\\[2mm]
+    \textbf{Automation criteria}:
+    data type detection · data cleaning · feature engineering ·
+    model training · hyperparameter tuning · model validation
+  \end{minipage}%
+  \begin{minipage}{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.65, transform shape]
+      \draw[->, thick] (0,0) -- (8,0)
+        node[anchor=north, xshift=-1.5cm, yshift=-0.2cm] {Computer Automation};
+      \draw[->, thick] (0,0) -- (0,8)
+        node[anchor=south east, rotate=90, xshift=-0.2cm, yshift=0.2cm] {Human Control};
+      \draw[dashed] (0,4) -- (8,4);
+      \draw[dashed] (4,0) -- (4,8);
+      \node[align=center, font=\scriptsize] at (2,2)
+        {Low \\ Human Control \\ Low \\ Automation};
+      \node[align=center, font=\scriptsize] at (6,2)
+        {Low \\ Human Control \\ High \\ Automation};
+      \node[align=center, font=\scriptsize] at (2,6)
+        {High \\ Human Control \\ Low \\ Automation};
+      \node[align=center, fill=green!20, font=\scriptsize] at (6,6)
+        {\textbf{HCAI Goal} \\ High \\ Human Control \\ High \\ Automation};
+    \end{tikzpicture}
+  \end{minipage}
+\end{frame}
+
+% Revisado hasta aquí
+
+\begin{frame}{Human-Guided Machine Learning (HGML)} \small
+  \begin{block}{HGML Concept (Gil et al., 2019)}
+    Practical realization of HCAI principles within the ML domain:
+    active participation of domain experts throughout the pipeline
+    enriches the process with contextual knowledge that algorithms
+    alone cannot incorporate
+  \end{block}
+  \vspace{3mm}
+  \begin{block}{Three Pipeline Areas}
+    \begin{itemize}\scriptsize
+      \item \textbf{Data Use}: variable selection, variable requirements,
+            instance selection --- \emph{users intervene in variable
+            selection/transformation, subpopulation definition and
+            outlier management}
+      \item \textbf{Model Development}: model selection, parameter settings,
+            solution design --- \emph{experts guide algorithm family
+            selection, impose parameter constraints and influence
+            pipeline design}
+      \item \textbf{Model Interpretation}: model assessment, model comparison,
+            parameter comparison --- \emph{users request specific metrics,
+            compare configurations and analyze sensitivity to parameters}
+    \end{itemize}
+  \end{block}
+  \vspace{2mm}
+  \begin{alertblock}{Limitation in Practice}\scriptsize
+    Few HGML proposals offer complete software implementations
+    accessible to users without AI training
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Heuristic Inspection Methods in HCI} \small
+  \begin{block}{What They Are}
+    \begin{itemize}\scriptsize
+      \item Expert-based evaluation \textbf{without user participation}
+      \item Typically \textbf{3--5 domain experts} analyze an interface
+            against predefined principles
+      \item Suitable for early-stage evaluation, iterative design cycles and contexts where user recruitment is impractical
+    \end{itemize}
+  \end{block}
+  \vspace{2mm}
+  \begin{block}{Two Established Techniques}
+    \begin{itemize}\scriptsize
+      \item \textbf{Heuristic evaluation with severity rating}:
+            identify usability problems and classify each by severity
+            on an ordinal scale, to prioritize redesign efforts
+      \item \textbf{Scored heuristic checklist}: transforms usability
+            principles into a list of evaluable criteria, each scored
+            quantitatively (Likert-type scale), yielding aggregate
+            compliance measures
+    \end{itemize}
+  \end{block}
+  \vspace{2mm}
+  \begin{alertblock}{Limitation}\scriptsize
+    Existing instruments cover only classical usability criteria
+    (e.g. visibility of system status, consistency) and do \textbf{not}
+    incorporate HCAI dimensions
+  \end{alertblock}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{The HCAI-HGML Inspection Instrument}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Dimensions and Criteria} \small
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Human Control --- 3 Criteria}
+        \begin{itemize}\scriptsize
+          \item \textbf{Ease of use}: operable without AI expertise;
+                no programming required
+          \item \textbf{Pipeline configurability}: user can customize
+                key decisions across phases without code intervention,
+                injecting domain knowledge
+          \item \textbf{Information interpretability}: system communicates
+                its decisions and results in formats accessible to
+                non-technical users
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Computer Automation --- 6 Criteria}
+        \begin{itemize}\scriptsize
+          \item \textbf{Data type detection}: automatic identification of
+                variable types
+          \item \textbf{Data cleaning}: detection and resolution of quality
+                issues (missing values, duplicates)
+          \item \textbf{Feature engineering}: generation, transformation
+                or selection of features
+          \item \textbf{Model training}: architecture instantiation and
+                optimization without manual intervention
+          \item \textbf{Hyperparameter tuning}: automatic search of
+                optimal configurations
+          \item \textbf{Model validation}: cross-validation or hold-out
+                evaluation and performance reporting
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  \begin{exampleblock}{Key Design Decision} \scriptsize
+    The six automation sub-criteria are collapsed into a single
+    $A_{\text{global}}$ per phase to avoid penalizing tools for
+    sub-criteria that are structurally inapplicable to a given stage.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Theoretical Responsibility Distribution} \small
+  \begin{table}
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l p{5.5cm} p{5.5cm}}
+      \toprule
+      \textbf{Pipeline Phase} & \textbf{Human Control (expected)} & \textbf{Computer Automation (expected)} \\
+      \midrule
+      \multicolumn{3}{l}{\textbf{Data Use}} \\
+      \midrule
+      Variable selection    & User prioritizes variables, proposes combinations, identifies missing data
+                            & System infers relevant features and performs automatic imputation \\
+      Variable requirements & Expert specifies inclusion/exclusion based on domain knowledge
+                            & System enforces rules and validates dataset consistency \\
+      Instance selection    & User defines subpopulations, removes outliers, sets splitting strategy
+                            & System performs automatic splitting, balancing and cross-validation \\
+      \midrule
+      \multicolumn{3}{l}{\textbf{Model Development}} \\
+      \midrule
+      Model selection       & User indicates preferred model types
+                            & System builds and evaluates candidate architectures \\
+      Parameter settings    & Expert specifies values informed by domain knowledge
+                            & System searches and optimizes hyperparameters within declared ranges \\
+      Solution design       & User modifies preprocessing, feature generation and pipeline design
+                            & System constructs complete pipelines (encoders, combiners, preprocessing) \\
+      \midrule
+      \multicolumn{3}{l}{\textbf{Model Interpretation}} \\
+      \midrule
+      Model assessment      & User requests specific metrics
+                            & System computes metrics, training curves and diagnostics \\
+      Model comparison      & User selects models or configurations to compare
+                            & System manages experiments and provides comparative visualizations \\
+      Parameter comparison  & User identifies parameters for targeted variation
+                            & System runs ablations and reports performance impact \\
+      \bottomrule
+    \end{tabular}}
+  \end{table}
+\end{frame}
+
+\begin{frame}{The HCAI-HGML Compliance Matrix} \small
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Structure}
+        \begin{itemize}\scriptsize
+          \item \textbf{Rows}: 9 pipeline phases across Data Use,
+                Model Development and Model Interpretation
+          \item \textbf{Columns}: 3 human control criteria
+                + 1 $A_{\text{global}}$ per phase
+          \item \textbf{Scale}: five-level ordinal
+                \begin{itemize}
+                  \item 0.00 --- Absent
+                  \item 0.25 --- Minimal (rudimentary, severe limitations)
+                  \item 0.50 --- Partial ($\approx$ half the expected behavior)
+                  \item 0.75 --- Substantial (largely met, minor gaps)
+                  \item 1.00 --- Complete (fully satisfied)
+                \end{itemize}
+        \end{itemize}
+      \end{block}
+      \vspace{2mm}
+      \begin{exampleblock}{Aggregate Scores}\scriptsize
+        \[
+          S_{HC} = \frac{1}{n \cdot c_{HC}}\sum_{i=1}^{n}\sum_{j=1}^{c_{HC}} v_{ij}
+          \qquad
+          S_{A} = \frac{1}{n}\sum_{i=1}^{n} A_{\text{global},i}
+        \]
+        $n=9$ phases, $c_{HC}=3$ human control criteria
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \begin{block}{HCAI Quadrant Classification}
+        \begin{tabular}{p{3.0cm} l l}
+          \toprule
+          \textbf{Quadrant} & $S_{HC}$ & $S_{A}$ \\
+          \midrule
+          \cellcolor{green!20}\textbf{Optimal} & $>0.5$ & $>0.5$ \\
+          Automated but opaque & $\leq0.5$ & $>0.5$ \\
+          Controlled but manual & $>0.5$ & $\leq0.5$ \\
+          Deficient & $\leq0.5$ & $\leq0.5$ \\
+          \bottomrule
+        \end{tabular}
+      \end{block}
+      \vspace{3mm}
+      \begin{block}{Distance to Ideal Point}\scriptsize
+        \[
+          D = \sqrt{(1-S_{HC})^2 + (1-S_{A})^2}
+        \]
+        $D \in [0,\,\sqrt{2}]$.
+        A low $D$ within the optimal quadrant signals proximity
+        to full HCAI compliance.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Case Study: InsuML}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{InsuML --- Tool Overview} \small
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \begin{block}{What is InsuML?}
+        \begin{itemize}\scriptsize
+          \item HGML software application under active development
+          \item Designed for users \textbf{without AI expertise}
+          \item Combines an AutoML engine with a \textbf{guided GUI}
+                that makes every pipeline decision visible and controllable
+          \item No programming required at any stage
+        \end{itemize}
+      \end{block}
+      \vspace{2mm}
+      \begin{block}{Distinctive Interaction Features}
+        \begin{itemize}\scriptsize
+          \item \textbf{Tab-based navigation}: sequential, bidirectional ---
+                forward requires completing current tab; backward is always permitted
+          \item \textbf{Pre-training configuration summary}:
+                all user-selected options and automatic defaults displayed
+                before execution begins
+          \item \textbf{Progressive disclosure}: each tab exposes
+                only the decisions relevant to its pipeline phase
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{block}{Three-Layer Architecture}
+        \begin{itemize}\scriptsize
+          \item \textbf{Interface Layer} (Python/Tkinter):\\
+                manages user interaction and input validation
+          \item \textbf{Core Logic Layer}:\\
+                translates user selections into technical configurations;
+                generates Ludwig config files automatically
+          \item \textbf{AutoML Layer} (Ludwig engine):\\
+                handles training, hyperparameter optimization
+                and model evaluation autonomously
+        \end{itemize}
+      \end{block}
+      \vspace{2mm}
+      \begin{exampleblock}{Design Premise}\scriptsize
+        Domain knowledge and expert intuition are valuable assets
+        that must be \emph{explicitly integrated} into the ML process,
+        rather than displaced by automation.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{HCAI-HGML Compliance Matrix --- InsuML Results} \small
+  \begin{table}
+    \centering
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{l cccc}
+      \toprule
+       & \multicolumn{3}{c}{\textbf{Human Control}} & \textbf{Automation} \\
+      \cmidrule(lr){2-4}\cmidrule(lr){5-5}
+      \textbf{Pipeline Phase}
+        & \textbf{Ease of Use}
+        & \textbf{Configurability}
+        & \textbf{Interpretability}
+        & $A_{\text{global}}$ \\
+      \midrule
+      \multicolumn{5}{l}{\textbf{Data Use}} \\
+      \midrule
+      Variable selection    & 1.00 & 0.50 & 0.75 & 0.75 \\
+      Variable requirements & 1.00 & 1.00 & 1.00 & 1.00 \\
+      Instance selection    & 1.00 & 1.00 & 1.00 & 1.00 \\
+      \midrule
+      \multicolumn{5}{l}{\textbf{Model Development}} \\
+      \midrule
+      Model selection       & \cellcolor{UCred!20}0.00 & \cellcolor{UCred!20}0.00 & \cellcolor{UCred!20}0.00 & 1.00 \\
+      Parameter settings    & 1.00 & 0.25 & 0.75 & 1.00 \\
+      Solution design       & 0.50 & 0.50 & 0.75 & 1.00 \\
+      \midrule
+      \multicolumn{5}{l}{\textbf{Model Interpretation}} \\
+      \midrule
+      Model assessment      & 1.00 & 1.00 & 1.00 & 1.00 \\
+      Model comparison      & 1.00 & 0.25 & 1.00 & 1.00 \\
+      Parameter comparison  & \cellcolor{UCred!20}0.00 & \cellcolor{UCred!20}0.00 & \cellcolor{UCred!20}0.00 & \cellcolor{UCred!20}0.00 \\
+      \midrule
+      \textbf{Score (mean)} & \textbf{0.72} & \textbf{0.50} & \textbf{0.69} & \textbf{0.86} \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \vspace{1mm}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{\scriptsize Aggregate Results}
+        \scriptsize
+        $S_{HC} = 0.64$ \quad $S_{A} = 0.86$ \quad $D = 0.39$\\
+        \textbf{Quadrant: Optimal} (high control, high automation)
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{\scriptsize Primary Gaps}
+        \scriptsize
+        Model selection and parameter comparison phases:
+        zero user-facing controls in the current version
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Inspection Results --- Dimension Analysis} \small
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Ease of Use (0.72)}
+        \begin{itemize}\scriptsize
+          \item Score \textbf{1.00} across 6 phases: consistent absence of
+                programming requirements; progressive disclosure via
+                tab-based navigation
+          \item \textbf{0.00}: model selection and parameter comparison
+                --- no user-facing controls in current version
+          \item \textbf{0.50}: solution design --- operable but limited
+                to preprocessing only
+        \end{itemize}
+      \end{block}
+      \vspace{2mm}
+      \begin{block}{Information Interpretability (0.69)}
+        \begin{itemize}\scriptsize
+          \item \textbf{1.00} on 4 phases: interactive visualizations,
+                accessible language, pre-training summary
+          \item \textbf{0.75} on 3 phases: minor completeness gaps
+          \item \textbf{0.00}: model selection (opacity of automatic
+                architecture choice) and parameter comparison
+                (phase not implemented)
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Pipeline Configurability (0.50) --- lowest criterion}
+        \begin{itemize}\scriptsize
+          \item \textbf{1.00}: variable requirements, instance selection,
+                model assessment --- full user control
+          \item \textbf{0.50}: variable selection (role assignment + missing
+                value strategies; no variable prioritization), solution design
+                (no encoder/combiner access)
+          \item \textbf{0.25}: parameter settings (only runtime and
+                number of candidates), model comparison (no comparison
+                parameters accessible)
+          \item \textbf{0.00}: model selection, parameter comparison
+        \end{itemize}
+      \end{block}
+      \vspace{2mm}
+      \begin{block}{Automation (0.86)}
+        \begin{itemize}\scriptsize
+          \item \textbf{1.00} on 7 of 9 phases --- Ludwig engine provides
+                broad pipeline coverage
+          \item \textbf{0.75}: variable selection (some preprocessing
+                decisions require explicit user specification)
+          \item \textbf{0.00}: parameter comparison (not implemented)
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{InsuML in the HCAI Quadrant Space} \small
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.68, transform shape]
+        \draw[->, thick] (0,0) -- (8,0)
+          node[anchor=north, xshift=-1.5cm, yshift=-0.2cm] {$S_A$ (Automation)};
+        \draw[->, thick] (0,0) -- (0,8)
+          node[anchor=south east, rotate=90, xshift=-0.2cm, yshift=0.2cm] {$S_{HC}$ (Human Control)};
+        \draw[dashed, gray] (0,4) -- (8,4);
+        \draw[dashed, gray] (4,0) -- (4,8);
+        % Quadrant labels
+        \node[align=center, font=\scriptsize, gray] at (2,2)   {Deficient};
+        \node[align=center, font=\scriptsize, gray] at (6,2)   {Automated\\but opaque};
+        \node[align=center, font=\scriptsize, gray] at (2,6)   {Controlled\\but manual};
+        \node[align=center, fill=green!15,    font=\scriptsize\bfseries] at (6,6)
+          {Optimal\\(HCAI target)};
+        % Ideal point
+        \node[star, fill=yellow!80!orange, draw=UCorange, minimum size=0.5cm,
+              inner sep=1pt] at (7.5,7.5) {};
+        \node[font=\tiny, anchor=west] at (7.6,7.5) {ideal};
+        % InsuML point
+        \fill[UCblue] (6.88,5.12) circle (0.18cm);
+        \node[font=\small\bfseries, text=UCblue, anchor=west] at (7.0, 5.0)
+          {InsuML};
+        % Distance annotation
+        \draw[dashed, UCred, thin] (6.88,5.12) -- (7.5,7.5)
+          node[midway, right, font=\tiny, UCred] {$D=0.39$};
+        % Axis ticks 0.5 and 1.0
+        \foreach \x/\lbl in {4/0.5, 7.5/1.0}
+          \draw (\x,-0.1) -- (\x,0.1) node[below, font=\tiny] {\lbl};
+        \foreach \y/\lbl in {4/0.5, 7.5/1.0}
+          \draw (-0.1,\y) -- (0.1,\y) node[left, font=\tiny] {\lbl};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Summary of Results}
+        \begin{itemize}\scriptsize
+          \item $S_{HC} = 0.64$ · $S_{A} = 0.86$ · $D = 0.39$
+          \item \textbf{Optimal quadrant}: high automation and
+                meaningful human control coexist
+          \item \textbf{High automation} driven by Ludwig engine's
+                broad pipeline coverage
+          \item \textbf{Human control gap}: configurability during
+                model development (0.50) is the weakest dimension
+          \item \textbf{Missing phase}: parameter comparison (0.00
+                across all criteria) is the single largest gap
+        \end{itemize}
+      \end{block}
+      \vspace{2mm}
+      \begin{exampleblock}{Key Finding}\scriptsize
+        High automation and meaningful human control are \textbf{not
+        competing objectives} when interaction design places the
+        non-expert user at the center.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Discussion}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Design Principles for ML Interfaces} \small
+  Three reusable principles emerging from the inspection:
+  \vspace{3mm}
+
+  \begin{block}{1 · Sequential Tab-Based Navigation}
+    \scriptsize
+    Structures interaction as a guided progression through pipeline phases,
+    exposing only relevant decisions at each step, with bidirectional access
+    to revisit and revise earlier choices.
+    \textbf{Effect}: ease of use scores of 1.00 across six of nine phases ---
+    a reliable interaction model for complex, multi-step ML workflows.
+  \end{block}
+
+  \begin{block}{2 · Explicit Responsibility Allocation}
+    \scriptsize
+    Making visible which decisions belong to the user and which are handled
+    automatically. The \textbf{pre-training configuration summary} exemplifies this:
+    every pending automated decision becomes an inspectable checkpoint that
+    the user can review and correct before training begins.
+    \textbf{Effect}: directly supports information interpretability scores
+    of 0.75--1.00 across most phases.
+  \end{block}
+
+  \begin{block}{3 · Modular Architectural Separation}
+    \scriptsize
+    Decoupling interface, core logic and AutoML layers keeps the translation
+    between user intentions and technical parameters explicit and traceable.
+    The AutoML backend can evolve independently without disrupting the
+    interaction model. \textbf{Effect}: contributes to bias mitigation and
+    responsible AI deployment.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Limitations and Future Work} \small
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Current Limitations}
+        \begin{itemize}\scriptsize
+          \item \textbf{Single evaluator}: scores assigned by the tool's
+                own authors --- independent auditors required for formal
+                validity
+          \item \textbf{No empirical usability studies}: task completion
+                time, error rates and user satisfaction not yet measured
+                with real domain experts
+          \item \textbf{Limited explainability}: only global performance
+                metrics and confusion matrices; no XAI techniques (SHAP,
+                LIME) for individual prediction explanations
+          \item \textbf{Missing parameter comparison}: zero-scoring phase
+                that limits systematic experimentation
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Roadmap}
+        \begin{enumerate}\scriptsize
+          \item \textbf{Independent reliability study}:
+                3--5 domain experts apply the matrix to InsuML ---
+                essential for consolidating the instrument
+          \item \textbf{Empirical usability studies}:
+                HCI research methods with real specialists performing
+                realistic modeling tasks
+          \item \textbf{XAI integration}:
+                SHAP and LIME for feature-level explanation of
+                individual predictions
+          \item \textbf{Parameter comparison}:
+                implement ablation/sensitivity module ---
+                concrete development priority
+          \item \textbf{Heterogeneous data sources}:
+                extend toward text, images and time series while
+                maintaining human-centered design principles
+        \end{enumerate}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Conclusions}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{frame}{Conclusions} \scriptsize
+  \begin{block}{Main Contributions}
+    \begin{itemize}
+      \item \textbf{Novel inspection instrument}: HCAI-HGML Compliance Matrix
+            extends scored heuristic checklists with HCAI dimensions across
+            nine HGML pipeline phases --- without requiring user participation
+      \item \textbf{Formal scoring}: aggregate measures $S_{HC}$, $S_{A}$
+            and distance metric $D$ yield a quantifiable, comparable HCAI
+            profile for any HGML tool
+      \item \textbf{Validated through case study}: InsuML achieves
+            $S_{HC} = 0.64$, $S_{A} = 0.86$, $D = 0.39$ --- firmly in
+            the Optimal quadrant --- with primary gaps localized in model
+            development configurability and parameter comparison
+      \item \textbf{Reusable design vocabulary}: sequential guided navigation,
+            explicit responsibility allocation and modular architectural
+            separation constitute transferable principles for any ML tool
+            targeting non-expert users
+    \end{itemize}
+  \end{block}
+  \vspace{2mm}
+  \begin{block}{Take-Home Messages}
+    \begin{itemize}
+      \item Existing heuristic inspection instruments \textbf{cannot assess HCAI
+            compliance} --- a gap that grows as AI components permeate
+            interactive systems.
+      \item High automation and meaningful human control are \textbf{not
+            trade-offs} when interface design places the non-expert user
+            at the center.
+      \item Interface design for ML systems is a \textbf{determining factor}
+            for effective and responsible human-AI collaboration.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+% ── Thank you ─────────────────────────────────────────────────────────────────
+\begin{frame}
+  \titlepage
+  \vspace{-4mm}
+  \begin{center}
+    \scriptsize
+    \textit{Supported by grant PID2023-146243OB-I00 funded by MICIU/AEI and ERDF/EU}
+  \end{center}
+\end{frame}
+
+\end{document}
