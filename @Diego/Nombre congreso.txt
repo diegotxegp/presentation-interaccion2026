@@ -1,0 +1,5 @@
+\raisebox{0.1cm}{%
+        \parbox{.5\paperwidth}{\centering\scriptsize
+        XXVI edición del Congreso Internacional de Persona-Ordenador (INTERACCIÓN 2026)\\
+        Albacete (Castilla-La Mancha, España) · 2 -- 4 September, 2026}
+      }

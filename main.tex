@@ -48,6 +48,13 @@
 \newcommand{\no}{$\times$}
 \newcommand{\partcheck}{$\sim$}
 
+% ── Section divider slides ────────────────────────────────────────────────────
+\AtBeginSection[]{
+  \begin{frame}{Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
 % ─────────────────────────────────────────────────────────────────────────────
 \begin{document}
 
@@ -216,8 +223,6 @@
   \end{minipage}
 \end{frame}
 
-% Revisado hasta aquí
-
 \begin{frame}{Human-Guided Machine Learning (HGML)} \small
   \begin{block}{HGML Concept (Gil et al., 2019)}
     Practical realization of HCAI principles within the ML domain:
@@ -242,10 +247,10 @@
     \end{itemize}
   \end{block}
   \vspace{2mm}
-  \begin{alertblock}{Limitation in Practice}\scriptsize
+  \begin{exampleblock}{Limitation in Practice}\scriptsize
     Few HGML proposals offer complete software implementations
     accessible to users without AI training
-  \end{alertblock}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}{Heuristic Inspection Methods in HCI} \small
@@ -270,11 +275,11 @@
     \end{itemize}
   \end{block}
   \vspace{2mm}
-  \begin{alertblock}{Limitation}\scriptsize
+  \begin{exampleblock}{Limitation}\scriptsize
     Existing instruments cover only classical usability criteria
     (e.g. visibility of system status, consistency) and do \textbf{not}
     incorporate HCAI dimensions
-  \end{alertblock}
+  \end{exampleblock}
 \end{frame}
 
 % ══════════════════════════════════════════════════════════════════════════════
@@ -318,49 +323,47 @@
   \end{columns}
   \vspace{2mm}
   \begin{exampleblock}{Key Design Decision} \scriptsize
-    The six automation sub-criteria are collapsed into a single
-    $A_{\text{global}}$ per phase to avoid penalizing tools for
-    sub-criteria that are structurally inapplicable to a given stage.
+    The six automation criteria are collapsed into a single
+    $A_{\text{global}}$ per phase to avoid penalizing tools for criteria that are structurally inapplicable to a given stage.
   \end{exampleblock}
 \end{frame}
 
-\begin{frame}{Theoretical Responsibility Distribution} \small
+\begin{frame}{Theoretical Responsibility Distribution} \scriptsize
   \begin{table}
     \centering
-    \renewcommand{\arraystretch}{1.2}
-    \resizebox{\linewidth}{!}{%
-    \begin{tabular}{l p{5.5cm} p{5.5cm}}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{l p{4.3cm} p{4.3cm}}
       \toprule
-      \textbf{Pipeline Phase} & \textbf{Human Control (expected)} & \textbf{Computer Automation (expected)} \\
+      \textbf{Phase} & \textbf{Human Control} & \textbf{Automation} \\
       \midrule
       \multicolumn{3}{l}{\textbf{Data Use}} \\
       \midrule
-      Variable selection    & User prioritizes variables, proposes combinations, identifies missing data
-                            & System infers relevant features and performs automatic imputation \\
-      Variable requirements & Expert specifies inclusion/exclusion based on domain knowledge
-                            & System enforces rules and validates dataset consistency \\
-      Instance selection    & User defines subpopulations, removes outliers, sets splitting strategy
-                            & System performs automatic splitting, balancing and cross-validation \\
+      Variable selection    & Prioritize variables, flag missing data
+                            & Infer features, auto-impute \\
+      Variable requirements & Set inclusion/exclusion rules
+                            & Enforce rules, validate data \\
+      Instance selection    & Define subpopulations, outliers
+                            & Auto split, balance, cross-validate \\
       \midrule
       \multicolumn{3}{l}{\textbf{Model Development}} \\
       \midrule
-      Model selection       & User indicates preferred model types
-                            & System builds and evaluates candidate architectures \\
-      Parameter settings    & Expert specifies values informed by domain knowledge
-                            & System searches and optimizes hyperparameters within declared ranges \\
-      Solution design       & User modifies preprocessing, feature generation and pipeline design
-                            & System constructs complete pipelines (encoders, combiners, preprocessing) \\
+      Model selection       & Indicate preferred model types
+                            & Build \& evaluate candidates \\
+      Parameter settings    & Specify domain-informed values
+                            & Search \& optimize hyperparameters \\
+      Solution design       & Modify preprocessing, pipeline
+                            & Construct full pipelines \\
       \midrule
       \multicolumn{3}{l}{\textbf{Model Interpretation}} \\
       \midrule
-      Model assessment      & User requests specific metrics
-                            & System computes metrics, training curves and diagnostics \\
-      Model comparison      & User selects models or configurations to compare
-                            & System manages experiments and provides comparative visualizations \\
-      Parameter comparison  & User identifies parameters for targeted variation
-                            & System runs ablations and reports performance impact \\
+      Model assessment      & Request specific metrics
+                            & Compute metrics, diagnostics \\
+      Model comparison      & Select models to compare
+                            & Manage experiments, visualize \\
+      Parameter comparison  & Identify parameters to vary
+                            & Run ablations, report impact \\
       \bottomrule
-    \end{tabular}}
+    \end{tabular}
   \end{table}
 \end{frame}
 
@@ -471,7 +474,29 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{HCAI-HGML Compliance Matrix --- InsuML Results} \small
+\begin{frame}{InsuML --- GUI}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{ventana_preprocess_features.png}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      \small
+      \begin{itemize}
+        \item \textbf{(A)} Tab-based navigation bar --- guides the
+              user sequentially through the pipeline, exposing only
+              decisions relevant to each phase
+        \item \textbf{(B)} Variable role assignment --- designate
+              each feature as input, target or excluded, based on
+              domain knowledge and feature type
+        \item \textbf{(C)} Contextual help panel --- provides the
+              information needed for the current screen
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{InsuML --- HCAI-HGML Compliance Matrix} \scriptsize
   \begin{table}
     \centering
     \renewcommand{\arraystretch}{1.25}
@@ -526,6 +551,7 @@
   \end{columns}
 \end{frame}
 
+\iffalse
 \begin{frame}{Inspection Results --- Dimension Analysis} \small
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
@@ -579,6 +605,7 @@
     \end{column}
   \end{columns}
 \end{frame}
+\fi
 
 \begin{frame}{InsuML in the HCAI Quadrant Space} \small
   \begin{columns}[T]
@@ -679,7 +706,7 @@
 \begin{frame}{Limitations and Future Work} \small
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \begin{alertblock}{Current Limitations}
+      \begin{exampleblock}{Current Limitations}
         \begin{itemize}\scriptsize
           \item \textbf{Single evaluator}: scores assigned by the tool's
                 own authors --- independent auditors required for formal
@@ -693,7 +720,7 @@
           \item \textbf{Missing parameter comparison}: zero-scoring phase
                 that limits systematic experimentation
         \end{itemize}
-      \end{alertblock}
+      \end{exampleblock}
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{block}{Roadmap}
