@@ -786,37 +786,24 @@
       \begin{exampleblock}{Current Limitations}
         \begin{itemize}\scriptsize
           \item \textbf{Single evaluator}: scores assigned by the tool's
-                own authors --- independent auditors required for formal
-                validity
-          \item \textbf{No empirical usability studies}: task completion
-                time, error rates and user satisfaction not yet measured
+                own authors --- may compromise objectivity
+          \item \textbf{No empirical usability studies}: completion
+                time, error rates and satisfaction not yet measured
                 with real domain experts
-          \item \textbf{Limited explainability}: only global performance
-                metrics and confusion matrices; no XAI techniques (SHAP,
-                LIME) for individual prediction explanations
-          \item \textbf{Missing parameter comparison}: zero-scoring phase
-                that limits systematic experimentation
+          \item \textbf{Limited scope}: explainability restricted to
+                global metrics (no XAI); no parameter comparison;
+                not yet tested on heterogeneous data (text, images,
+                time series)
         \end{itemize}
       \end{exampleblock}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{block}{Roadmap}
+      \begin{block}{Future Work}
         \begin{enumerate}\scriptsize
-          \item \textbf{Independent reliability study}:
-                3--5 domain experts apply the matrix to InsuML ---
-                essential for consolidating the instrument
-          \item \textbf{Empirical usability studies}:
-                HCI research methods with real specialists performing
-                realistic modeling tasks
-          \item \textbf{XAI integration}:
-                SHAP and LIME for feature-level explanation of
-                individual predictions
-          \item \textbf{Parameter comparison}:
-                implement ablation/sensitivity module ---
-                concrete development priority
-          \item \textbf{Heterogeneous data sources}:
-                extend toward text, images and time series while
-                maintaining human-centered design principles
+          \item \textbf{Formal usability studies} with independent
+                evaluators and real users
+          \item \textbf{XAI integration}, \textbf{parameter comparison}
+                and \textbf{heterogeneous data sources}
         \end{enumerate}
       \end{block}
     \end{column}
@@ -827,38 +814,30 @@
 \section{Conclusions}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{Conclusions} \scriptsize
+\begin{frame}{Conclusions} \small
   \begin{block}{Main Contributions}
-    \begin{itemize}
-      \item \textbf{Novel inspection instrument}: HCAI-HGML Compliance Matrix
-            extends scored heuristic checklists with HCAI dimensions across
-            nine HGML pipeline phases --- without requiring user participation
-      \item \textbf{Formal scoring}: aggregate measures $S_{HC}$, $S_{A}$
-            and distance metric $D$ yield a quantifiable, comparable HCAI
-            profile for any HGML tool
-      \item \textbf{Validated through case study}: InsuML achieves
-            $S_{HC} = 0.64$, $S_{A} = 0.86$, $D = 0.39$ --- firmly in
-            the Optimal quadrant --- with primary gaps localized in model
-            development configurability and parameter comparison
-      \item \textbf{Reusable design vocabulary}: sequential guided navigation,
-            explicit responsibility allocation and modular architectural
-            separation constitute transferable principles for any ML tool
-            targeting non-expert users
+    \begin{itemize}\scriptsize
+      \item \textbf{HCAI-HGML Compliance Matrix}: extends scored heuristic
+            checklists with HCAI dimensions across 9 pipeline phases,
+            no user participation required
+      \item \textbf{Formal scoring}: $S_{HC}$, $S_A$, $D$ give a
+            quantifiable, comparable HCAI profile for any HGML tool
+      \item \textbf{Case study}: InsuML scores $S_{HC}=0.64$, $S_A=0.86$,
+            $D=0.39$ --- Optimal quadrant, gaps in configurability
+            and parameter comparison
+      \item \textbf{Reusable design vocabulary}: guided navigation,
+            responsibility allocation, modular architecture
     \end{itemize}
   \end{block}
-  \vspace{2mm}
-  \begin{block}{Take-Home Messages}
+  \vspace{3mm}
+  \begin{exampleblock}{Take-Home Messages}
+    \scriptsize
     \begin{itemize}
-      \item Existing heuristic inspection instruments \textbf{cannot assess HCAI
-            compliance} --- a gap that grows as AI components permeate
-            interactive systems.
-      \item High automation and meaningful human control are \textbf{not
-            trade-offs} when interface design places the non-expert user
-            at the center.
-      \item Interface design for ML systems is a \textbf{determining factor}
-            for effective and responsible human-AI collaboration.
+      \item Existing instruments \textbf{cannot assess HCAI compliance}
+      \item High automation and human control are \textbf{not trade-offs}
+      \item Interface design is \textbf{key} to responsible human-AI collaboration
     \end{itemize}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
 % ── Thank you ─────────────────────────────────────────────────────────────────
