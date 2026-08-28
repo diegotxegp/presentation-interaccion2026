@@ -107,30 +107,30 @@
     \begin{column}{0.50\textwidth}
       \begin{itemize}
         \item \textbf{ML in non-technical domains}:\\
-          Domain experts need ML without requiring data science training
+          Domain experts need ML without requiring data science knowledge
 
         \item \textbf{AutoML democratization}:\\
           Performance-first AutoML neglects transparency, user control and
           interpretability of results
 
         \item \textbf{HCAI paradigm --- the user at the center}:\\
-          AI should amplify human capabilities, not replace them ---
-          yet few tools have been systematically evaluated under HCAI criteria
+          An active participant with control, not a passive
+          recipient --- yet few AutoML tools evaluated under HCAI criteria
 
         \item \textbf{Gap in HCI evaluation}:\\
           Existing heuristic inspection instruments are limited to
           classical usability criteria and do \emph{not} incorporate
-          HCAI dimensions
+          HCAI criteria
       \end{itemize}
     \end{column}
     \begin{column}{0.50\textwidth}
-      \begin{exampleblock}{Core Research Question} \scriptsize
-        Which criteria determine whether a pipeline decision genuinely
-        belongs to the user or to the system, and how can the
-        resulting human-automation balance be characterized in a
-        reproducible and comparable manner?
-      \end{exampleblock}
-      \vspace{4mm}
+      %\begin{exampleblock}{Core Research Question} \scriptsize
+        %Which criteria determine whether a pipeline decision genuinely
+        %belongs to the user or to the system, and how can the
+        %resulting human-automation balance be characterized in a
+        %reproducible and comparable manner?
+      %\end{exampleblock}
+      %\vspace{4mm}
     \begin{block}{Two Interrelated Contributions}
         \begin{enumerate} \scriptsize
           \item Extension of heuristic inspection methods to HGML tools
@@ -178,6 +178,7 @@
   \end{center}
 \end{frame}
 
+\iffalse
 \begin{frame}{What Existing Instruments Cannot Assess}
   Current heuristic inspection instruments \textbf{cover only classical usability},
   leaving three questions unanswered:
@@ -204,6 +205,7 @@
     outside the scope of any existing inspection instrument.
   \end{exampleblock}
 \end{frame}
+\fi
 
 % ══════════════════════════════════════════════════════════════════════════════
 \section{Background}
@@ -250,35 +252,43 @@
 
 \begin{frame}{Human-Guided Machine Learning (HGML)} \small
   \begin{block}{HGML Concept (Gil et al., 2019)}
-    Practical realization of HCAI principles within the ML domain:
-    active participation of domain experts throughout the pipeline
+    \begin{itemize}
+        \item Practical realization of HCAI principles within the ML domain
+        \item Active participation of domain experts throughout the pipeline
     enriches the process with contextual knowledge that algorithms
     alone cannot incorporate
+    \end{itemize}
   \end{block}
   \vspace{3mm}
   \centering
-  \begin{tikzpicture}[scale=0.85, transform shape,
+  \begin{tikzpicture}[scale=0.78, transform shape,
       area/.style={rectangle, rounded corners=0.15cm, draw=UCgray,
-                   minimum width=5.6cm, minimum height=3.0cm,
-                   text width=5.2cm, align=left, font=\scriptsize}]
+                   minimum width=5.2cm, minimum height=2.4cm,
+                   text width=4.8cm, align=left, font=\scriptsize}]
     \node[area, fill=UCbluePale] (data) at (0,0) {
-      \centering\textbf{Data Use}\\[1mm]
-      \raggedright variable selection, variable requirements,
-      instance selection\\[1mm]
-      \emph{Users intervene in variable selection/transformation,
-      subpopulation definition and outlier management}};
-    \node[area, fill=UCgreen!12] (model) at (6.2,0) {
-      \centering\textbf{Model Development}\\[1mm]
-      \raggedright model selection, parameter settings,
-      solution design\\[1mm]
-      \emph{Experts guide algorithm family selection, impose
-      parameter constraints and influence pipeline design}};
-    \node[area, fill=UCorange!12] (interp) at (12.4,0) {
-      \centering\textbf{Model Interpretation}\\[1mm]
-      \raggedright model assessment, model comparison,
-      parameter comparison\\[1mm]
-      \emph{Users request specific metrics, compare configurations
-      and analyze sensitivity to parameters}};
+      \centering\textbf{Data Use}
+      \vspace{1mm}
+      \begin{itemize}
+        \item Variable selection
+        \item Variable requirements
+        \item Instance selection
+      \end{itemize}};
+    \node[area, fill=UCgreen!12] (model) at (5.7,0) {
+      \centering\textbf{Model Development}
+      \vspace{1mm}
+      \begin{itemize}
+        \item Model selection
+        \item Parameter settings
+        \item Solution design
+      \end{itemize}};
+    \node[area, fill=UCorange!12] (interp) at (11.4,0) {
+      \centering\textbf{Model Interpretation}
+      \vspace{1mm}
+      \begin{itemize}
+        \item Model assessment
+        \item Model comparison
+        \item Parameter comparison
+      \end{itemize}};
     \draw[->, thick, UCgray] (data.east) -- (model.west);
     \draw[->, thick, UCgray] (model.east) -- (interp.west);
   \end{tikzpicture}
@@ -314,13 +324,6 @@
       Transforms usability principles into criteria scored
       quantitatively (Likert-type scale), yielding aggregate
       compliance measures};
-    \node[rectangle, draw=UCorange, dashed, fill=UCorange!8,
-          minimum width=8cm, minimum height=1.1cm, align=center,
-          rounded corners=0.2cm, font=\scriptsize] (lim) at (3.2,-2.4) {
-      \textbf{Limitation}: both cover only classical usability
-      criteria and do \textbf{not} incorporate HCAI dimensions};
-    \draw[->, thick, UCblue!70] (sev.south) -- ++(0,-0.3) -| (lim.north);
-    \draw[->, thick, UCgreen!70] (score.south) -- ++(0,-0.3) -| (lim.north);
   \end{tikzpicture}
 \end{frame}
 
@@ -333,32 +336,23 @@
     \begin{column}{0.48\textwidth}
       \begin{block}{Human Control --- 3 Criteria}
         \begin{itemize}\scriptsize
-          \item \textbf{Ease of use}: operable without AI expertise;
-                no programming required
-          \item \textbf{Pipeline configurability}: user can customize
-                key decisions across phases without code intervention,
-                injecting domain knowledge
-          \item \textbf{Information interpretability}: system communicates
-                its decisions and results in formats accessible to
-                non-technical users
+          \item \textbf{Ease of use}: no AI expertise, no programming
+          \item \textbf{Pipeline configurability}: customize decisions,
+                no code intervention
+          \item \textbf{Information interpretability}: accessible,
+                non-technical formats
         \end{itemize}
       \end{block}
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{block}{Computer Automation --- 6 Criteria}
         \begin{itemize}\scriptsize
-          \item \textbf{Data type detection}: automatic identification of
-                variable types
-          \item \textbf{Data cleaning}: detection and resolution of quality
-                issues (missing values, duplicates)
-          \item \textbf{Feature engineering}: generation, transformation
-                or selection of features
-          \item \textbf{Model training}: architecture instantiation and
-                optimization without manual intervention
-          \item \textbf{Hyperparameter tuning}: automatic search of
-                optimal configurations
-          \item \textbf{Model validation}: cross-validation or hold-out
-                evaluation and performance reporting
+          \item \textbf{Data type detection}: automatic identification
+          \item \textbf{Data cleaning}: missing values, duplicates
+          \item \textbf{Feature engineering}: generate, transform, select
+          \item \textbf{Model training}: architecture + optimization
+          \item \textbf{Hyperparameter tuning}: automatic search
+          \item \textbf{Model validation}: cross-validation, reporting
         \end{itemize}
       \end{block}
     \end{column}
@@ -440,16 +434,23 @@
                 Model Development and Model Interpretation
           \item \textbf{Columns}: 3 human control criteria
                 + 1 $A_{\text{global}}$ per phase
-          \item \textbf{Scale}: five-level ordinal
-                \begin{itemize}
-                  \item 0.00 --- Absent
-                  \item 0.25 --- Minimal (rudimentary, severe limitations)
-                  \item 0.50 --- Partial ($\approx$ half the expected behavior)
-                  \item 0.75 --- Substantial (largely met, minor gaps)
-                  \item 1.00 --- Complete (fully satisfied)
-                \end{itemize}
         \end{itemize}
       \end{block}
+            \vspace{2mm}
+      \centering
+      \resizebox{0.95\columnwidth}{!}{%
+      \begin{tikzpicture}[scale=1, transform shape]
+        \shade[left color=red!45!white, right color=green!70!black,
+               rounded corners=0.15cm] (0,0) rectangle (10,1.0);
+        \foreach \x/\lbl/\name in {0/0.00/Absent, 2.5/0.25/Minimal,
+              5/0.50/Partial, 7.5/0.75/Substantial, 10/1.00/Complete}
+          {
+            \draw[thick, white] (\x,0) -- (\x,1.0);
+            \node[font=\bfseries\normalsize, anchor=south] at (\x,1.15) {\lbl};
+            \node[font=\small, anchor=north, text width=2.2cm, align=center]
+                  at (\x,-0.2) {\name};
+          }
+      \end{tikzpicture}}
       \vspace{2mm}
       \begin{exampleblock}{Aggregate Scores}\scriptsize
         \[
@@ -490,72 +491,39 @@
 \section{Case Study: InsuML}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{InsuML --- Tool Overview} \small
+\begin{frame}{InsuML --- Tool Overview \& GUI} \small
   \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{ventana_preprocess_features.png}
+      \vspace{1mm}
+      \begin{itemize}\scriptsize
+        \item \textbf{(A)} Tab-based navigation
+        \item \textbf{(B)} Variable role assignment
+        \item \textbf{(C)} Contextual help panel
+      \end{itemize}
+    \end{column}
     \begin{column}{0.50\textwidth}
       \begin{block}{What is InsuML?}
         \begin{itemize}\scriptsize
-          \item HGML software application under active development
-          \item Designed for users \textbf{without AI expertise}
-          \item Combines an AutoML engine with a \textbf{guided GUI}
-                that makes every pipeline decision visible and controllable
-          \item No programming required at any stage
+          \item HGML tool for users \textbf{without AI expertise}
+          \item Guided GUI: every decision visible and controllable
+          \item No programming required
         \end{itemize}
       \end{block}
       \vspace{2mm}
-      \begin{block}{Distinctive Interaction Features}
+      \begin{block}{Key Interaction Features}
         \begin{itemize}\scriptsize
-          \item \textbf{Tab-based navigation}: sequential, bidirectional ---
-                forward requires completing current tab; backward is always permitted
-          \item \textbf{Pre-training configuration summary}:
-                all user-selected options and automatic defaults displayed
-                before execution begins
-          \item \textbf{Progressive disclosure}: each tab exposes
-                only the decisions relevant to its pipeline phase
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.47\textwidth}
-      \begin{block}{Three-Layer Architecture}
-        \begin{itemize}\scriptsize
-          \item \textbf{Interface Layer} (Python/Tkinter):\\
-                manages user interaction and input validation
-          \item \textbf{Core Logic Layer}:\\
-                translates user selections into technical configurations;
-                generates Ludwig config files automatically
-          \item \textbf{AutoML Layer} (Ludwig engine):\\
-                handles training, hyperparameter optimization
-                and model evaluation autonomously
+          \item \textbf{Sequential, bidirectional navigation}
+          \item \textbf{Pre-training configuration summary}
+          \item \textbf{Progressive disclosure} per tab
         \end{itemize}
       \end{block}
       \vspace{2mm}
       \begin{exampleblock}{Design Premise}\scriptsize
-        Domain knowledge and expert intuition are valuable assets
-        that must be \emph{explicitly integrated} into the ML process,
-        rather than displaced by automation.
+        Domain knowledge must be \emph{explicitly integrated}
+        into the ML process, not displaced by automation.
       \end{exampleblock}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{InsuML --- GUI}
-  \begin{columns}[T]
-    \begin{column}{0.55\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{ventana_preprocess_features.png}
-    \end{column}
-    \begin{column}{0.42\textwidth}
-      \small
-      \begin{itemize}
-        \item \textbf{(A)} Tab-based navigation bar --- guides the
-              user sequentially through the pipeline, exposing only
-              decisions relevant to each phase
-        \item \textbf{(B)} Variable role assignment --- designate
-              each feature as input, target or excluded, based on
-              domain knowledge and feature type
-        \item \textbf{(C)} Contextual help panel --- provides the
-              information needed for the current screen
-      \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
