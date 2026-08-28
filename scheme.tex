@@ -1,0 +1,202 @@
+% !TEX program = pdflatex
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=1.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{titlesec}
+
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\section}{0pt}{5pt}{2pt}
+\titlespacing*{\subsection}{0pt}{3pt}{1pt}
+
+\setlist{itemsep=0pt, topsep=1pt, parsep=0pt}
+
+\newcommand{\tiempo}[1]{\hfill\normalfont\small\textcolor{gray}{$\sim$#1}}
+\newcommand{\clave}[1]{\textbf{#1}}
+
+\title{\vspace{-1.5cm}\textbf{Esquema rápido de charla}\\[2pt]\large HCAI-HGML Compliance Matrix}
+\author{}
+\date{\small 15 min + 5 min de preguntas}
+
+\begin{document}
+\maketitle
+\vspace{-1cm}
+\noindent\textit{\small Una línea por idea. Mirar solo lo imprescindible; el guion completo es el respaldo.}
+\vspace{2mm}
+\hrule
+\vspace{2mm}
+
+\section*{PORTADA \tiempo{20s}}
+\begin{itemize}
+    \item Nombre + coautores (Camilo Palazuelos, Rafael Duque) --- UC, Matemáticas/Estadística/Computación
+    \item Frase gancho: instrumento para evaluar ML guiado por humanos bajo criterios HCAI + caso real aplicado
+\end{itemize}
+
+\section{MOTIVATION \tiempo{3 min}}
+
+\subsection*{1.1 Research Context \tiempo{90s}}
+\begin{itemize}
+    \item No técnicos + ML $\rightarrow$ AutoML democratiza, PERO prioriza rendimiento y descuida transparencia/control/interpretación
+    \item HCAI $\rightarrow$ usuario activo, no receptor pasivo
+    \item Gap: inspección heurística en HCI = solo usabilidad clásica, sin HCAI
+    \item $\rightarrow$ \clave{2 contribuciones}: 1) Matriz HCAI-HGML $\cdot$ 2) caso InsuML (herramienta de ML para usuarios sin experiencia en IA)
+\end{itemize}
+
+\subsection*{1.2 The Evaluation Gap \tiempo{55s}}
+\begin{itemize}
+    \item HCI (Nielsen, Severity ratings, Scored checklists) $\longleftrightarrow$ HCAI (2 ejes independientes) $\rightarrow$ \textbf{nunca se cruzan}
+    \item Ningún instrumento de inspección
+heurística incorpora criterios HCAI
+    \item $\rightarrow$ Matriz HCAI-HGML rellena ese hueco
+\end{itemize}
+
+\section{BACKGROUND \tiempo{2:30 min}}
+
+\subsection*{2.1 HCAI \tiempo{55s}}
+\begin{itemize}
+    \item \clave{Frase-puente de arranque}: ``Para poder construir un instrumento así, necesitamos 3 piezas'' $\rightarrow$ HCAI / HGML / Inspección heurística
+    \item Shneiderman: la IA amplifica, no sustituye
+    \item Automatización y control humano = \textbf{ejes independientes} (no balanza)
+    \item Objetivo: cuadrante arriba-derecha (alto + alto)
+    \item 3 criterios control humano / 6 criterios automatización
+\end{itemize}
+
+\subsection*{2.2 HGML \tiempo{55s}}
+\begin{itemize}
+    \item Gil et al.: experto de dominio = activo, no estorbo
+    \item 3 bloques $\times$ 3 fases: Data Use / Model Development / Model Interpretation
+    \item Problema: pocas propuestas llegan a software real
+\end{itemize}
+
+\subsection*{2.3 Inspección heurística en HCI \tiempo{40s}}
+\begin{itemize}
+    \item 3--5 expertos, sin usuarios reales
+    \item Severidad vs. checklist puntuado
+    \item Limitación: solo usabilidad clásica $\rightarrow$ entra nuestra propuesta
+\end{itemize}
+
+\section{INSTRUMENTO \tiempo{3 min}}
+
+\subsection*{3.1 Dimensiones y criterios \tiempo{70s}}
+\begin{itemize}
+    \item Control humano (3): facilidad de uso / configurabilidad / interpretabilidad
+    \item Automatización (6): tipos de dato, limpieza, features, entrenamiento, hiperparámetros, validación
+    \item \clave{Decisión clave}: automatización colapsa en $A_{\text{global}}$ por fase (evita penalizar lo no aplicable)
+\end{itemize}
+
+\subsection*{3.2 Tabla de responsabilidad teórica \tiempo{55s}}
+\begin{itemize}
+    \item Referencia: qué le toca al usuario / qué al sistema, fase a fase
+    \item Solo 2--3 ejemplos en voz: variable selection, model selection, model assessment
+    \item ``Misma lógica para las 9 fases''
+\end{itemize}
+
+\subsection*{3.3 La Matriz de Cumplimiento \tiempo{55s}}
+\begin{itemize}
+    \item Filas = 9 fases $\cdot$ Columnas = 3 control humano + $A_{\text{global}}$
+    \item Escala: 0 / 0.25 / 0.5 / 0.75 / 1
+    \item $S_{HC}$ = media control humano $\cdot$ $S_A$ = media automatización
+    \item 4 cuadrantes (óptimo si ambas $>0.5$) + distancia al punto ideal $(1,1)$
+\end{itemize}
+
+\section{CASO INSUML \tiempo{3:30 min}}
+
+\subsection*{4.1 Tool overview \tiempo{80s}}
+\begin{itemize}
+    \item Motor AutoML + GUI guiada, sin programar
+    \item Captura: A) navegación por pestañas $\cdot$ B) rol de variables $\cdot$ C) ayuda contextual
+    \item Interacción: secuencial bidireccional / resumen pre-entrenamiento / revelado progresivo
+    \item Arquitectura de 3 capas: interfaz (Tkinter) $\rightarrow$ lógica $\rightarrow$ AutoML (Ludwig)
+\end{itemize}
+
+\subsection*{4.2 Matriz aplicada \tiempo{70s} --- \textcolor{gray}{\small no leer números, señalar patrones}}
+\begin{itemize}
+    \item Data Use: muy alto en general
+    \item Model Development: contraste --- model selection = 0 en control humano / 1.00 automatización
+    \item Model Interpretation: bien excepto parameter comparison = 0 en todo (no implementado, fila roja)
+    \item Medias: \clave{0.72 / 0.50 / 0.69 / 0.86} (ease / config / interpret / automation)
+\end{itemize}
+
+\subsection*{4.3 Cuadrante HCAI \tiempo{55s}}
+\begin{itemize}
+    \item $S_{HC}=0.64$ $\cdot$ $S_A=0.86$ $\cdot$ $D=0.39$ $\rightarrow$ \textbf{cuadrante Óptimo}
+    \item Mensaje: alta automatización y control humano NO compiten si el diseño centra al no experto
+    \item Margen de mejora: configurabilidad en desarrollo del modelo + comparación de parámetros
+\end{itemize}
+
+\section{DISCUSSION \tiempo{1:30 min}}
+
+\subsection*{5.1 Principios de diseño \tiempo{50s}}
+\begin{enumerate}
+    \item Navegación secuencial $\rightarrow$ ease of use = 1.00 en 6/9 fases
+    \item Responsabilidad explícita $\rightarrow$ resumen pre-entrenamiento = checkpoint inspeccionable
+    \item Arquitectura modular $\rightarrow$ trazabilidad, mitigación de sesgos
+\end{enumerate}
+
+\subsection*{5.2 Limitaciones y futuro \tiempo{40s}}
+\begin{itemize}
+    \item Puntuaciones = autores propios $\rightarrow$ siguiente paso: 3--5 evaluadores independientes
+    \item Falta estudio de usabilidad con usuarios reales
+    \item Falta XAI (SHAP/LIME) + parameter comparison + datos heterogéneos
+\end{itemize}
+
+\section{CONCLUSIONS \tiempo{45s}}
+\begin{itemize}
+    \item 2 contribuciones: Matriz HCAI-HGML + caso InsuML
+    \item \clave{$S_{HC}=0.64$ $\cdot$ $S_A=0.86$ $\cdot$ $D=0.39$ $\cdot$ Cuadrante Óptimo}
+    \item 3 mensajes finales:
+    \begin{enumerate}
+        \item Instrumentos actuales no evalúan cumplimiento HCAI
+        \item Automatización y control humano NO son un trade-off
+        \item El diseño de interfaz es clave para colaboración humano-IA responsable
+    \end{enumerate}
+    \item Gracias + preguntas
+\end{itemize}
+
+\vspace{2mm}
+\hrule
+\vspace{3mm}
+
+\vspace{-2mm}
+\begin{minipage}[t]{0.47\textwidth}
+\textbf{Números clave (memorizar)}
+\vspace{1mm}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Concepto & Valor \\
+\midrule
+Fases del pipeline & 9 (3$\times$3) \\
+Criterios control humano & 3 \\
+Criterios automatización & 6 $\to$ $A_{\text{global}}$ \\
+Escala & 0/0.25/0.5/0.75/1 \\
+Ease / Config / Interpret / Autom. & 0.72/0.50/0.69/0.86 \\
+$S_{HC}$ & 0.64 \\
+$S_A$ & 0.86 \\
+$D$ & 0.39 \\
+Cuadrante & Óptimo \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{Preguntas más probables (respuesta en 1 línea)}
+\vspace{1mm}
+\small
+\begin{enumerate}[leftmargin=*]
+    \item ¿Sesgo autoevaluación? $\to$ Limitación reconocida; próximo paso: 3--5 evaluadores independientes
+    \item ¿Por qué $A_{\text{global}}$ colapsado? $\to$ No todos los criterios aplican a todas las fases
+    \item ¿Validado en más herramientas? $\to$ Sí: clínico + OpenML (diabetes, cmc), consistente
+    \item ¿Por qué esas 9 fases? $\to$ Modelo de pipeline de Gil et al. (2019)
+    \item ¿Por qué 5 niveles? $\to$ Equilibrio matiz / fiabilidad de la inspección
+    \item ¿Comparación con PyCaret/Google AutoML? $\to$ Trabajo futuro; ninguna maximiza ambos ejes
+    \item ¿Por qué Ludwig? $\to$ Decisión pragmática; arquitectura modular permite sustituirlo
+    \item Model selection: 0 control / 1.00 autom., ¿contradicción? $\to$ No, es el gap que la matriz visibiliza
+\end{enumerate}
+\end{minipage}
+
+\end{document}

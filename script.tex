@@ -44,25 +44,23 @@ Vamos a situar el contexto. Cada vez más profesionales no técnicos necesitan a
 
 Frente a eso ha ido ganando peso el paradigma de la IA Centrada en el Humano (HCAI) que sitúa al usuario en el centro del diseño: no como receptor pasivo de un resultado, sino como participante activo con capacidad de control. Sin embargo, muy pocas herramientas AutoML concretas se han evaluado de forma sistemática bajo criterios HCAI.
 
-Y aquí aparece la razón que motiva este trabajo: los propios instrumentos de evaluación que usamos en Interacción Persona-Ordenador, la inspección heurística, siguen limitados a criterios de usabilidad clásica y no incorporan estas dimensiones de HCAI.
-
-Eso nos lleva a la pregunta que da sentido a todo lo que viene después: qué criterios determinan si una decisión del pipeline pertenece realmente al usuario o al sistema, y cómo caracterizamos ese equilibrio de forma reproducible y comparable entre herramientas.
+Y aquí aparece la razón que motiva este trabajo: los instrumentos de evaluación que usamos en Interacción Persona-Ordenador, la inspección heurística, siguen limitados a criterios de usabilidad clásica y no incorporan HCAI.
 
 \indicacion{Señalar el bloque de las dos contribuciones, a la derecha.}
-De ahí nuestras dos contribuciones: primero, extender los métodos de inspección heurística con la Matriz de Cumplimiento HCAI-HGML; y segundo, un caso de estudio ilustrativo aplicando ese instrumento a InsuML, una herramienta HGML pensada para usuarios sin experiencia en IA.
+De ahí nuestras dos contribuciones: 1) extender los métodos de inspección heurística con la Matriz de Cumplimiento HCAI-HGML; y 2), un caso de estudio aplicando ese instrumento a InsuML, una herramienta de ML pensada para usuarios sin experiencia en IA.
 
 \subsection{The Evaluation Gap \hfill \normalfont\small $\sim$55s}
 \indicacion{Recorrer el diagrama de izquierda a derecha: caja HCI, hueco, caja HCAI.}
 Para entender bien de dónde nace esta idea, pensad en dos mundos que hasta ahora no se habían hablado. Por un lado, en Interacción Persona-Ordenador llevamos décadas usando la inspección heurística: los checklists de Nielsen, las valoraciones de severidad, listas puntuadas que cualquier evaluador puede aplicar sin necesidad de usuarios reales. Por otro lado, tenemos el marco HCAI, con sus dos ejes independientes de control humano y automatización.
 
-El problema es que estos dos mundos nunca se han cruzado. Ningún instrumento de inspección heurística incorpora las dimensiones de HCAI. Y ese hueco, marcado aquí en naranja, es exactamente lo que rellena nuestra propuesta: la Matriz de Cumplimiento HCAI-HGML, que veremos en un momento.
-
-Esto se traduce, en la práctica, en tres preguntas muy concretas que ningún instrumento actual responde: qué fases del pipeline hay que examinar, quién es dueño de cada decisión —el usuario o el sistema—, y cómo caracterizamos ese equilibrio de forma que se pueda comparar entre herramientas, no solo describirlo cualitativamente. Con esto claro, pasemos a repasar brevemente los conceptos que necesitamos para construir nuestra propuesta.
+El problema es que estos dos mundos nunca se han cruzado. Ningún instrumento de inspección heurística incorpora los criterios de HCAI. Y ese hueco, marcado aquí en naranja, es exactamente lo que rellena nuestra propuesta: la Matriz de Cumplimiento HCAI-HGML, que veremos en un momento.
 
 \section{BACKGROUND \hfill \normalfont\small $\sim$2:30 min}
 
 \subsection{Human-Centered Artificial Intelligence \hfill \normalfont\small $\sim$55s}
 \indicacion{Señalar primero el bloque de texto, después el diagrama de cuadrantes a la derecha.}
+Para poder construir un instrumento así, necesitamos 3 piezas:
+
 El marco HCAI de Shneiderman parte de una premisa clara: la IA debe amplificar las capacidades humanas, no sustituirlas. Y para llevar esa premisa a la práctica, rompe con la intuición clásica: normalmente pensamos que más automatización significa menos control humano, como si fueran los extremos de una misma balanza. Shneiderman propone tratarlos como dos ejes independientes. Esto abre la puerta a un cuadrante, el de arriba a la derecha, donde conviven alta automatización y alto control humano al mismo tiempo. Ese es el espacio de diseño que perseguimos.
 
 Para poder evaluarlo, el control humano se descompone en tres criterios —facilidad de uso, configurabilidad del pipeline e interpretabilidad de la información— y la automatización en seis, que veis listados aquí abajo: detección de tipos de datos, limpieza, ingeniería de características, entrenamiento, optimización de hiperparámetros y validación del modelo. Los desarrollaremos en detalle en un momento.
@@ -76,7 +74,7 @@ Este marco organiza la participación del usuario en tres grandes bloques que co
 El problema, de nuevo, es que pocas propuestas de HGML llegan a convertirse en software real accesible para usuarios sin formación en IA. Se quedan en el papel.
 
 \subsection{Heuristic Inspection Methods in HCI \hfill \normalfont\small $\sim$40s}
-Por último, un repaso rápido a los métodos de inspección heurística en HCI, que son la base metodológica sobre la que construimos. Son técnicas de evaluación por expertos, normalmente entre tres y cinco, que analizan una interfaz sin necesidad de usuarios reales. Existen dos variantes clásicas: la evaluación heurística con valoración de severidad, que prioriza problemas de usabilidad según su impacto; y el checklist heurístico puntuado, que convierte los principios en criterios evaluables numéricamente, permitiendo comparar herramientas de forma agregada.
+Por último, un repaso rápido a los métodos de inspección heurística en HCI, que son la base metodológica sobre la que construimos. Son técnicas de evaluación por expertos, normalmente entre tres y cinco, que analizan una interfaz sin necesidad de usuarios reales. Existen dos variantes clásicas: 1) la evaluación heurística con valoración de severidad, que prioriza problemas de usabilidad según su impacto; y 2) el checklist heurístico puntuado, que convierte los principios en criterios evaluables numéricamente, permitiendo comparar herramientas de forma agregada.
 
 La limitación, como ya hemos visto, es que ambas se quedan en criterios de usabilidad clásica y no incorporan HCAI. Y aquí es donde entra nuestra propuesta.
 
