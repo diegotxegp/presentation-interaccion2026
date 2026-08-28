@@ -73,6 +73,19 @@
   \end{tikzpicture}%
 }
 
+\newcommand{\magnifiericon}[1]{%
+  \begin{tikzpicture}[baseline=-0.15cm]
+    \draw[#1, thick] (-0.15,0.10) circle (0.22);
+    \draw[#1, thick, line cap=round] (0.02,-0.08) -- (0.32,-0.38);
+  \end{tikzpicture}%
+}
+\newcommand{\arrowupicon}[1]{%
+  \begin{tikzpicture}[baseline=-0.15cm]
+    \draw[#1, thick, -{Stealth[length=2.2mm]}]
+      (-0.25,-0.28) -- (-0.05,-0.05) -- (0.15,-0.20) -- (0.35,0.30);
+  \end{tikzpicture}%
+}
+
 % ── Section divider slides ────────────────────────────────────────────────────
 \AtBeginSection[]{
   \begin{frame}{Contents}
@@ -564,23 +577,6 @@
       \bottomrule
     \end{tabular}
   \end{table}
-  \vspace{1mm}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{exampleblock}{\scriptsize Aggregate Results}
-        \scriptsize
-        $S_{HC} = 0.64$ \quad $S_{A} = 0.86$ \quad $D = 0.39$\\
-        \textbf{Quadrant: Optimal} (high control, high automation)
-      \end{exampleblock}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{exampleblock}{\scriptsize Primary Gaps}
-        \scriptsize
-        Model selection and parameter comparison phases:
-        zero user-facing controls in the current version
-      \end{exampleblock}
-    \end{column}
-  \end{columns}
 \end{frame}
 
 \iffalse
@@ -781,7 +777,11 @@
 \begin{frame}{Limitations and Future Work} \small
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \begin{exampleblock}{Current Limitations}
+      \centering
+      \magnifiericon{UCred}\\[1mm]
+      \textbf{\small Current Limitations}
+      \vspace{2mm}
+      \begin{exampleblock}{}
         \begin{itemize}\scriptsize
           \item \textbf{Single evaluator}: scores assigned by the tool's
                 own authors --- may compromise objectivity
@@ -796,7 +796,11 @@
       \end{exampleblock}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{block}{Future Work}
+      \centering
+      \arrowupicon{UCgreen!70!black}\\[1mm]
+      \textbf{\small Future Work}
+      \vspace{2mm}
+      \begin{block}{}
         \begin{enumerate}\scriptsize
           \item \textbf{Formal usability studies} with independent
                 evaluators and real users
@@ -820,13 +824,26 @@
             no user participation required
       \item \textbf{Formal scoring}: $S_{HC}$, $S_A$, $D$ give a
             quantifiable, comparable HCAI profile for any HGML tool
-      \item \textbf{Case study}: InsuML scores $S_{HC}=0.64$, $S_A=0.86$,
-            $D=0.39$ --- Optimal quadrant, gaps in configurability
-            and parameter comparison
+      \item \textbf{Case study}: InsuML --- see results below
       \item \textbf{Reusable design vocabulary}: guided navigation,
             responsibility allocation, modular architecture
     \end{itemize}
   \end{block}
+  \vspace{3mm}
+  \centering
+  \begin{tikzpicture}[scale=0.85, transform shape,
+      badge/.style={rectangle, rounded corners=0.15cm, draw=none,
+                     minimum width=2.6cm, minimum height=1.3cm,
+                     align=center, font=\bfseries}]
+    \node[badge, fill=UCblue!15] at (0,0)
+      {\textcolor{UCblue}{$S_{HC}=0.64$}\\[0.5mm]\scriptsize\normalfont Human Control};
+    \node[badge, fill=UCgreen!15] at (3.2,0)
+      {\textcolor{UCgreen!70!black}{$S_{A}=0.86$}\\[0.5mm]\scriptsize\normalfont Automation};
+    \node[badge, fill=UCorange!15] at (6.4,0)
+      {\textcolor{UCorange}{$D=0.39$}\\[0.5mm]\scriptsize\normalfont Distance to Ideal};
+    \node[badge, fill=green!20, draw=green!50!black] at (9.6,0)
+      {\textbf{Optimal}\\[0.5mm]\scriptsize\normalfont Quadrant};
+  \end{tikzpicture}
   \vspace{3mm}
   \begin{exampleblock}{Take-Home Messages}
     \scriptsize

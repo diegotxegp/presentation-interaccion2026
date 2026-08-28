@@ -41,48 +41,44 @@ Hola a todos. Mi nombre es Diego García-Prieto, y este trabajo lo firmamos junt
 \subsection{Research Context \hfill \normalfont\small $\sim$90s}
 \indicacion{Columna izquierda: recorrer los cuatro puntos de arriba a abajo.}
 Vamos a situar el contexto. Cada vez más profesionales no técnicos necesitan aplicar Machine Learning sin haberse formado en ciencia de datos. Las herramientas AutoML nacieron para responder a eso, automatizando tareas como la ingeniería de características, la selección de modelos o la optimización de hiperparámetros. La democratización del ML. El problema es que esa automatización se ha orientado casi en exclusiva a maximizar el rendimiento predictivo, y eso ha dejado en un segundo plano aspectos igual de importantes: la transparencia del proceso, el control del usuario y la interpretación de los resultados.
- 
+
 Frente a eso ha ido ganando peso el paradigma de la IA Centrada en el Humano (HCAI) que sitúa al usuario en el centro del diseño: no como receptor pasivo de un resultado, sino como participante activo con capacidad de control. Sin embargo, muy pocas herramientas AutoML concretas se han evaluado de forma sistemática bajo criterios HCAI.
- 
+
 Y aquí aparece la razón que motiva este trabajo: los propios instrumentos de evaluación que usamos en Interacción Persona-Ordenador, la inspección heurística, siguen limitados a criterios de usabilidad clásica y no incorporan estas dimensiones de HCAI.
- 
-\indicacion{Señalar el recuadro de la pregunta de investigación, a la derecha.}
-Eso nos lleva a la pregunta que veréis aquí: qué criterios determinan si una decisión del pipeline pertenece realmente al usuario o al sistema, y cómo caracterizamos ese equilibrio de forma reproducible y comparable entre herramientas.
- 
-\indicacion{Señalar el bloque de las dos contribuciones, debajo.}
+
+Eso nos lleva a la pregunta que da sentido a todo lo que viene después: qué criterios determinan si una decisión del pipeline pertenece realmente al usuario o al sistema, y cómo caracterizamos ese equilibrio de forma reproducible y comparable entre herramientas.
+
+\indicacion{Señalar el bloque de las dos contribuciones, a la derecha.}
 De ahí nuestras dos contribuciones: primero, extender los métodos de inspección heurística con la Matriz de Cumplimiento HCAI-HGML; y segundo, un caso de estudio ilustrativo aplicando ese instrumento a InsuML, una herramienta HGML pensada para usuarios sin experiencia en IA.
 
-\subsection{The Evaluation Gap \hfill \normalfont\small $\sim$45s}
+\subsection{The Evaluation Gap \hfill \normalfont\small $\sim$55s}
 \indicacion{Recorrer el diagrama de izquierda a derecha: caja HCI, hueco, caja HCAI.}
 Para entender bien de dónde nace esta idea, pensad en dos mundos que hasta ahora no se habían hablado. Por un lado, en Interacción Persona-Ordenador llevamos décadas usando la inspección heurística: los checklists de Nielsen, las valoraciones de severidad, listas puntuadas que cualquier evaluador puede aplicar sin necesidad de usuarios reales. Por otro lado, tenemos el marco HCAI, con sus dos ejes independientes de control humano y automatización.
 
 El problema es que estos dos mundos nunca se han cruzado. Ningún instrumento de inspección heurística incorpora las dimensiones de HCAI. Y ese hueco, marcado aquí en naranja, es exactamente lo que rellena nuestra propuesta: la Matriz de Cumplimiento HCAI-HGML, que veremos en un momento.
 
-\subsection{What Existing Instruments Cannot Assess \hfill \normalfont\small $\sim$40s}
-Esto se traduce en tres preguntas muy concretas que ningún instrumento actual responde. Primera, qué fases del pipeline hay que examinar. Segunda, quién es dueño de cada decisión, el usuario o el sistema, que es la base para poder puntuar el control humano. Y tercera, cómo caracterizamos ese equilibrio de forma que se pueda comparar entre herramientas, no solo describirlo cualitativamente.
-
-En definitiva, el control humano significativo y el nivel adecuado de automatización simplemente quedan fuera del alcance de cualquier instrumento de inspección existente hoy en día. Con esto claro, pasemos a repasar brevemente los conceptos que necesitamos para construir nuestra propuesta.
+Esto se traduce, en la práctica, en tres preguntas muy concretas que ningún instrumento actual responde: qué fases del pipeline hay que examinar, quién es dueño de cada decisión —el usuario o el sistema—, y cómo caracterizamos ese equilibrio de forma que se pueda comparar entre herramientas, no solo describirlo cualitativamente. Con esto claro, pasemos a repasar brevemente los conceptos que necesitamos para construir nuestra propuesta.
 
 \section{BACKGROUND \hfill \normalfont\small $\sim$2:30 min}
 
 \subsection{Human-Centered Artificial Intelligence \hfill \normalfont\small $\sim$55s}
 \indicacion{Señalar primero el bloque de texto, después el diagrama de cuadrantes a la derecha.}
-El marco HCAI de Shneiderman parte de una idea muy sencilla pero que rompe con la intuición clásica: normalmente pensamos que más automatización significa menos control humano, como si fueran los extremos de una misma balanza. Shneiderman propone tratarlos como dos ejes independientes. Esto abre la puerta a un cuadrante, el de arriba a la derecha, donde conviven alta automatización y alto control humano al mismo tiempo. Ese es el espacio de diseño que perseguimos.
+El marco HCAI de Shneiderman parte de una premisa clara: la IA debe amplificar las capacidades humanas, no sustituirlas. Y para llevar esa premisa a la práctica, rompe con la intuición clásica: normalmente pensamos que más automatización significa menos control humano, como si fueran los extremos de una misma balanza. Shneiderman propone tratarlos como dos ejes independientes. Esto abre la puerta a un cuadrante, el de arriba a la derecha, donde conviven alta automatización y alto control humano al mismo tiempo. Ese es el espacio de diseño que perseguimos.
 
-Para poder evaluarlo, el control humano se descompone en tres criterios —facilidad de uso, configurabilidad del pipeline e interpretabilidad de la información— y la automatización en seis, que veis listados aquí abajo: detección de tipos de datos, limpieza, ingeniería de características, entrenamiento, optimización de hiperparámetros y validación del modelo.
+Para poder evaluarlo, el control humano se descompone en tres criterios —facilidad de uso, configurabilidad del pipeline e interpretabilidad de la información— y la automatización en seis, que veis listados aquí abajo: detección de tipos de datos, limpieza, ingeniería de características, entrenamiento, optimización de hiperparámetros y validación del modelo. Los desarrollaremos en detalle en un momento.
 
 \subsection{Human-Guided Machine Learning \hfill \normalfont\small $\sim$55s}
 El Machine Learning Guiado por Humanos, HGML, es la traducción práctica de estos principios de HCAI al terreno del ML. La idea de fondo, de Gil y colaboradores, es que el conocimiento del experto de dominio no es un estorbo para el algoritmo, sino un activo que enriquece el proceso con contexto que el propio algoritmo no puede inferir por sí solo.
 
 \indicacion{Recorrer las tres cajas de izquierda a derecha.}
-Este marco organiza la participación del usuario en tres grandes bloques que coinciden con las fases del pipeline: uso de datos, donde el usuario interviene en selección de variables, subpoblaciones y outliers; desarrollo del modelo, donde guía la familia de algoritmos y las restricciones de parámetros; e interpretación del modelo, donde pide métricas concretas y compara configuraciones.
+Este marco organiza la participación del usuario en tres grandes bloques que coinciden con las fases del pipeline: uso de datos, con la selección de variables, sus requisitos y la selección de instancias; desarrollo del modelo, con la selección del modelo, los ajustes de parámetros y el diseño de la solución; e interpretación del modelo, con la evaluación, la comparación de modelos y la comparación de parámetros. Más adelante veremos, fase a fase, qué le corresponde exactamente al usuario y qué al sistema en cada una de ellas.
 
 El problema, de nuevo, es que pocas propuestas de HGML llegan a convertirse en software real accesible para usuarios sin formación en IA. Se quedan en el papel.
 
 \subsection{Heuristic Inspection Methods in HCI \hfill \normalfont\small $\sim$40s}
 Por último, un repaso rápido a los métodos de inspección heurística en HCI, que son la base metodológica sobre la que construimos. Son técnicas de evaluación por expertos, normalmente entre tres y cinco, que analizan una interfaz sin necesidad de usuarios reales. Existen dos variantes clásicas: la evaluación heurística con valoración de severidad, que prioriza problemas de usabilidad según su impacto; y el checklist heurístico puntuado, que convierte los principios en criterios evaluables numéricamente, permitiendo comparar herramientas de forma agregada.
 
-La limitación, como ya hemos dicho, es que ambas se quedan en criterios de usabilidad clásica y no incorporan HCAI. Y aquí es donde entra nuestra propuesta.
+La limitación, como ya hemos visto, es que ambas se quedan en criterios de usabilidad clásica y no incorporan HCAI. Y aquí es donde entra nuestra propuesta.
 
 \section{THE HCAI-HGML INSPECTION INSTRUMENT \hfill \normalfont\small $\sim$3 min}
 
@@ -90,21 +86,24 @@ La limitación, como ya hemos dicho, es que ambas se quedan en criterios de usab
 Vamos ya con el instrumento en sí. Lo que hacemos es coger la estructura del checklist heurístico puntuado, que ya conocéis, y sustituir sus criterios de usabilidad clásica por los criterios de control humano y automatización de HCAI que os acabo de presentar.
 
 \indicacion{Columna izquierda: control humano. Columna derecha: automatización.}
-Así que tenemos, por un lado, los tres criterios de control humano: facilidad de uso, configurabilidad del pipeline e interpretabilidad de la información. Y por otro, los seis de automatización que ya hemos visto.
+Así que tenemos, por un lado, los tres criterios de control humano: facilidad de uso —sin necesitar experiencia en IA ni programar—, configurabilidad del pipeline —personalizar decisiones sin tocar código— e interpretabilidad de la información —resultados en formatos accesibles para no técnicos. Y por otro, los seis de automatización: detección de tipos de dato, limpieza, ingeniería de características, entrenamiento, optimización de hiperparámetros y validación del modelo.
 
-\indicacion{Señalar el recuadro naranja de la decisión de diseño.}
+\indicacion{Señalar el recuadro de la decisión de diseño.}
 Aquí quiero destacar una decisión de diseño importante: en la matriz final, los seis criterios de automatización se colapsan en una única puntuación por fase, que llamamos $A_{\text{global}}$. ¿Por qué? Porque no todos los criterios de automatización tienen sentido en todas las fases, y si los mantuviéramos separados estaríamos penalizando artificialmente a una herramienta por la ausencia de un criterio que ni siquiera es aplicable en ese punto del pipeline.
 
 \subsection{Theoretical Responsibility Distribution \hfill \normalfont\small $\sim$55s}
 Para poder puntuar de forma consistente, necesitamos un punto de referencia: qué se espera exactamente del usuario y qué del sistema en cada una de las nueve fases del pipeline. Eso es justo lo que veis en esta tabla.
 
 \indicacion{Recorrer brevemente las tres columnas: Data Use, Model Development, Model Interpretation.}
-Las nueve fases se agrupan en tres bloques. En uso de datos, por ejemplo, en selección de variables el usuario debería poder priorizar variables y señalar datos ausentes, mientras que el sistema infiere características y hace imputación automática. En desarrollo del modelo, en selección de modelo el usuario indica tipos de modelo preferidos y el sistema construye y evalúa candidatos. Y en interpretación, por ejemplo en evaluación del modelo, el usuario pide métricas concretas y el sistema las calcula y reporta automáticamente.
+Las nueve fases se agrupan en los tres bloques que ya hemos visto. En uso de datos, por ejemplo, en selección de variables el usuario debería poder priorizar variables y señalar datos ausentes, mientras que el sistema infiere características y hace imputación automática. En desarrollo del modelo, en selección de modelo el usuario indica tipos de modelo preferidos y el sistema construye y evalúa candidatos. Y en interpretación, por ejemplo en evaluación del modelo, el usuario pide métricas concretas y el sistema las calcula y reporta automáticamente. La misma lógica se aplica a las nueve fases.
 
 Esta tabla no es solo descriptiva: es el patrón contra el que después contrastamos el comportamiento observado de cualquier herramienta real.
 
 \subsection{The HCAI-HGML Compliance Matrix \hfill \normalfont\small $\sim$55s}
-Con ese patrón de referencia, construimos la matriz de cumplimiento. En las filas van las nueve fases, en las columnas los tres criterios de control humano más la automatización global por fase. Cada celda se puntúa en una escala ordinal de cinco niveles, de 0, ausente, a 1, completo, pasando por 0.25, 0.5 y 0.75, que veis definidos aquí.
+Con ese patrón de referencia, construimos la matriz de cumplimiento. En las filas van las nueve fases, en las columnas los tres criterios de control humano más la automatización global por fase.
+
+\indicacion{Señalar la barra de gradiente.}
+Cada celda se puntúa en esta escala ordinal de cinco niveles, de 0, ausente, a 1, completo, pasando por 0.25, 0.5 y 0.75.
 
 \indicacion{Señalar las fórmulas de $S_{HC}$ y $S_A$.}
 Una vez rellena la matriz completa, calculamos dos puntuaciones agregadas: la puntuación de control humano, $S_{HC}$, que es la media de todas las celdas de control humano; y la puntuación de automatización, $S_A$, la media de todas las $A_{\text{global}}$.
@@ -114,29 +113,27 @@ Estas dos puntuaciones, entre 0 y 1, sitúan a la herramienta en uno de cuatro c
 
 Con el instrumento ya definido, vamos a ver cómo lo hemos aplicado a un caso real.
 
-\section{CASE STUDY: INSUML \hfill \normalfont\small $\sim$3:40 min}
+\section{CASE STUDY: INSUML \hfill \normalfont\small $\sim$3:30 min}
 
-\subsection{InsuML --- Tool Overview \hfill \normalfont\small $\sim$60s}
+\subsection{InsuML --- Tool Overview \& GUI \hfill \normalfont\small $\sim$80s}
 InsuML es la herramienta que hemos desarrollado nosotros mismos, actualmente en desarrollo activo, pensada específicamente para usuarios sin experiencia en IA. La premisa de diseño es que el conocimiento experto es un activo que hay que integrar explícitamente en el proceso, no algo que la automatización deba desplazar. Por eso combina un motor AutoML con una interfaz gráfica guiada donde cada decisión del pipeline es visible y controlable, sin necesidad de programar en ningún momento.
 
-\indicacion{Bloque inferior izquierdo: características de interacción.}
-Tiene tres características de interacción que quiero destacar. Primera, navegación por pestañas secuencial y bidireccional: para avanzar hay que completar la pestaña actual, pero se puede volver atrás en cualquier momento. Segunda, un resumen de configuración previo al entrenamiento, donde se muestran todas las opciones elegidas por el usuario junto con los valores por defecto aplicados automáticamente, antes de lanzar nada. Y tercera, revelado progresivo: cada pestaña solo muestra las decisiones relevantes para esa fase.
+\indicacion{Señalar A, B y C en la captura de pantalla, a la izquierda.}
+Aquí tenéis una captura real de la pestaña de configuración de características. En A, la barra de navegación con las pestañas del pipeline. En B, la asignación de rol a cada variable: entrada, objetivo o excluida, según el conocimiento del dominio y el tipo de dato. Y en C, un panel de ayuda contextual con la información necesaria para esa pantalla concreta.
 
-\indicacion{Bloque derecho: arquitectura de tres capas.}
-Por debajo, la arquitectura tiene tres capas: interfaz en Python con Tkinter, una capa de lógica que traduce las decisiones del usuario en configuraciones técnicas, y una capa AutoML basada en el motor Ludwig que se encarga del entrenamiento, la optimización de hiperparámetros y la validación de forma autónoma.
+\indicacion{Bloque derecho: características de interacción.}
+Tiene tres características de interacción que quiero destacar. Navegación por pestañas secuencial y bidireccional: para avanzar hay que completar la pestaña actual, pero se puede volver atrás en cualquier momento. Un resumen de configuración previo al entrenamiento, donde se muestran todas las opciones elegidas por el usuario junto con los valores por defecto aplicados automáticamente, antes de lanzar nada. Y revelado progresivo: cada pestaña solo muestra las decisiones relevantes para esa fase.
 
-\subsection{InsuML --- GUI \hfill \normalfont\small $\sim$35s}
-\indicacion{Señalar A, B y C en la captura de pantalla.}
-Aquí tenéis una captura real de la pestaña de configuración de características. En A, la barra de navegación con las pestañas del pipeline. En B, la asignación de rol a cada variable: entrada, objetivo o excluida, según el conocimiento del dominio y el tipo de dato. Y en C, un panel de ayuda contextual con la información necesaria para esa pantalla concreta. Todo esto sin escribir una sola línea de código.
+Por debajo, aunque no lo veáis en pantalla, la arquitectura tiene tres capas: interfaz en Python con Tkinter, una capa de lógica que traduce las decisiones del usuario en configuraciones técnicas, y una capa AutoML basada en el motor Ludwig que se encarga del entrenamiento, la optimización de hiperparámetros y la validación de forma autónoma. Todo esto sin escribir una sola línea de código.
 
 \subsection{InsuML --- HCAI-HGML Compliance Matrix \hfill \normalfont\small $\sim$70s}
 Y aquí llega el resultado central: la matriz de cumplimiento aplicada a InsuML, fase por fase.
 
 \indicacion{Recorrer brevemente las filas destacando patrones, no leer todos los números.}
-Lo primero que salta a la vista es que en uso de datos InsuML puntúa muy alto en casi todo: selección de variables, requisitos de variables e instancias están muy cubiertos. En desarrollo del modelo hay más contraste: los parámetros y el diseño de la solución van razonablemente bien, pero selección de modelo tiene cero en las tres columnas de control humano, aunque la automatización es completa, porque el usuario simplemente no tiene ningún control sobre qué arquitectura se elige. Y en interpretación, evaluación y comparación de modelos van muy bien, pero comparación de parámetros directamente no está implementada, de ahí el cero en toda la fila.
+Lo primero que salta a la vista es que en uso de datos InsuML puntúa muy alto en casi todo: selección de variables, requisitos de variables e instancias están muy cubiertos. En desarrollo del modelo hay más contraste: los parámetros y el diseño de la solución van razonablemente bien, pero selección de modelo tiene cero en las tres columnas de control humano, aunque la automatización es completa, porque el usuario simplemente no tiene ningún control sobre qué arquitectura se elige. Y en interpretación, evaluación y comparación de modelos van muy bien, pero comparación de parámetros directamente no está implementada, de ahí el cero en toda la fila, resaltado en rojo.
 
-\indicacion{Señalar los dos recuadros inferiores.}
-Las medias quedan así: 0.72 en facilidad de uso, 0.50 en configurabilidad —la más baja de las tres—, 0.69 en interpretabilidad y 0.86 en automatización. Los huecos más claros están, precisamente, en selección de modelo y comparación de parámetros.
+\indicacion{Señalar la fila de medias, al final de la tabla.}
+Las medias quedan así: 0.72 en facilidad de uso, 0.50 en configurabilidad —la más baja de las tres—, 0.69 en interpretabilidad y 0.86 en automatización. Los huecos más claros están, precisamente, en selección de modelo y comparación de parámetros. Veamos ahora qué dan estas medias en conjunto.
 
 \subsection{InsuML in the HCAI Quadrant Space \hfill \normalfont\small $\sim$55s}
 \indicacion{Señalar el punto azul de InsuML y la estrella del punto ideal.}
@@ -158,7 +155,10 @@ Como todo trabajo, tiene limitaciones que queremos reconocer abiertamente. La pr
 De cara al futuro, la prioridad más inmediata es precisamente eso: estudios de usabilidad formales con evaluadores independientes, y en paralelo, integrar explicabilidad, implementar la comparación de parámetros y extender la herramienta a datos heterogéneos como texto, imágenes o series temporales.
 
 \section{CONCLUSIONS \hfill \normalfont\small $\sim$45s}
-Para cerrar. Este trabajo aporta dos cosas relacionadas entre sí: por un lado, la Matriz de Cumplimiento HCAI-HGML, que extiende los checklists heurísticos clásicos con dimensiones de HCAI a lo largo de nueve fases del pipeline, sin necesitar usuarios reales para aplicarse; y por otro, un caso de estudio con InsuML que obtiene $S_{HC} = 0.64$, $S_A = 0.86$ y $D = 0.39$, situándose en el cuadrante óptimo, con margen de mejora claro en configurabilidad y en comparación de parámetros.
+Para cerrar. Este trabajo aporta dos cosas relacionadas entre sí: por un lado, la Matriz de Cumplimiento HCAI-HGML, que extiende los checklists heurísticos clásicos con dimensiones de HCAI a lo largo de nueve fases del pipeline, sin necesitar usuarios reales para aplicarse; y por otro, un caso de estudio con InsuML.
+
+\indicacion{Señalar, de izquierda a derecha, las cuatro insignias de resultados.}
+InsuML obtiene $S_{HC} = 0.64$ en control humano, $S_A = 0.86$ en automatización y una distancia al punto ideal de $D = 0.39$, situándose en el cuadrante óptimo, con margen de mejora claro en configurabilidad y en comparación de parámetros.
 
 El mensaje que nos gustaría que os llevarais es este: los instrumentos de inspección existentes no pueden evaluar el cumplimiento HCAI; alta automatización y control humano no son necesariamente un compromiso, uno a costa del otro; y el diseño de la interfaz es la pieza clave para que la colaboración entre humano e IA sea realmente responsable. Muchas gracias, quedo encantado de responder cualquier pregunta.
 
