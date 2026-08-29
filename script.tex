@@ -1,11 +1,7 @@
 % !TEX program = pdflatex
 \documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[spanish]{babel}
-\usepackage{lmodern}
 \usepackage[a4paper,margin=2.5cm]{geometry}
-\usepackage{microtype}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -38,22 +34,21 @@ Hola a todos. Mi nombre es Diego García-Prieto, y este trabajo lo firmamos junt
 
 \section{MOTIVATION \hfill \normalfont\small $\sim$3 min}
 
-\subsection{Research Context \hfill \normalfont\small $\sim$90s}
-\indicacion{Columna izquierda: recorrer los cuatro puntos de arriba a abajo.}
+\subsection{Research Context \hfill \normalfont\small $\sim$70s}
+\indicacion{Recorrer los tres puntos de arriba a abajo. Al llegar al segundo punto, señalar el iceberg a la derecha: la punta visible es el rendimiento predictivo; la parte sumergida, lo que la automatización descuida.}
 Vamos a situar el contexto. Cada vez más profesionales no técnicos necesitan aplicar Machine Learning sin haberse formado en ciencia de datos. Las herramientas AutoML nacieron para responder a eso, automatizando tareas como la ingeniería de características, la selección de modelos o la optimización de hiperparámetros. La democratización del ML. El problema es que esa automatización se ha orientado casi en exclusiva a maximizar el rendimiento predictivo, y eso ha dejado en un segundo plano aspectos igual de importantes: la transparencia del proceso, el control del usuario y la interpretación de los resultados.
 
-Frente a eso ha ido ganando peso el paradigma de la IA Centrada en el Humano (HCAI) que sitúa al usuario en el centro del diseño: no como receptor pasivo de un resultado, sino como participante activo con capacidad de control. Sin embargo, muy pocas herramientas AutoML concretas se han evaluado de forma sistemática bajo criterios HCAI.
+Frente a eso ha ido ganando peso el paradigma de la IA Centrada en el Humano (HCAI), que sitúa al usuario en el centro del diseño: no como receptor pasivo de un resultado, sino como participante activo con capacidad de control. Sin embargo, muy pocas herramientas AutoML concretas se han evaluado de forma sistemática bajo criterios HCAI.
 
+\subsection{The Evaluation Gap \hfill \normalfont\small $\sim$75s}
+\indicacion{Señalar primero el bullet superior; después recorrer el diagrama de izquierda a derecha: caja HCI, hueco, caja HCAI; por último, el bloque de contribuciones abajo.}
 Y aquí aparece la razón que motiva este trabajo: los instrumentos de evaluación que usamos en Interacción Persona-Ordenador, la inspección heurística, siguen limitados a criterios de usabilidad clásica y no incorporan HCAI.
 
-\indicacion{Señalar el bloque de las dos contribuciones, a la derecha.}
-De ahí nuestras dos contribuciones: 1) extender los métodos de inspección heurística con la Matriz de Cumplimiento HCAI-HGML; y 2), un caso de estudio aplicando ese instrumento a InsuML, una herramienta de ML pensada para usuarios sin experiencia en IA.
-
-\subsection{The Evaluation Gap \hfill \normalfont\small $\sim$55s}
-\indicacion{Recorrer el diagrama de izquierda a derecha: caja HCI, hueco, caja HCAI.}
 Para entender bien de dónde nace esta idea, pensad en dos mundos que hasta ahora no se habían hablado. Por un lado, en Interacción Persona-Ordenador llevamos décadas usando la inspección heurística: los checklists de Nielsen, las valoraciones de severidad, listas puntuadas que cualquier evaluador puede aplicar sin necesidad de usuarios reales. Por otro lado, tenemos el marco HCAI, con sus dos ejes independientes de control humano y automatización.
 
-El problema es que estos dos mundos nunca se han cruzado. Ningún instrumento de inspección heurística incorpora los criterios de HCAI. Y ese hueco, marcado aquí en naranja, es exactamente lo que rellena nuestra propuesta: la Matriz de Cumplimiento HCAI-HGML, que veremos en un momento.
+El problema es que estos dos mundos nunca se han cruzado. Ningún instrumento de inspección heurística incorpora los criterios de HCAI. Y ese hueco, marcado aquí en naranja, es exactamente lo que rellena nuestra propuesta: la Matriz de Cumplimiento HCAI-HGML.
+
+De ahí nuestras dos contribuciones: 1) extender los métodos de inspección heurística con la Matriz de Cumplimiento HCAI-HGML; y 2) un caso de estudio aplicando ese instrumento a InsuML, una herramienta de ML pensada para usuarios sin experiencia en IA.
 
 \section{BACKGROUND \hfill \normalfont\small $\sim$2:30 min}
 

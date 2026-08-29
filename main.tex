@@ -129,36 +129,93 @@
         \item \textbf{Human-Centered AI (HCAI) --- the user at the center}:\\
           An active participant with control, not a passive
           recipient --- yet few AutoML tools evaluated under HCAI criteria
-
-        \item \textbf{Gap in Human-Computer Interaction (HCI)}:\\
-          Existing heuristic inspection instruments are limited to
-          classical usability criteria and do \emph{not} incorporate
-          HCAI criteria
       \end{itemize}
     \end{column}
-    \begin{column}{0.45\textwidth}
-      %\begin{exampleblock}{Core Research Question} \scriptsize
-        %Which criteria determine whether a pipeline decision genuinely
-        %belongs to the user or to the system, and how can the
-        %resulting human-automation balance be characterized in a
-        %reproducible and comparable manner?
-      %\end{exampleblock}
-      \vspace{10mm}
-    \begin{block}{Two Interrelated Contributions}
-        \begin{enumerate} \scriptsize
-          \item Extension of heuristic inspection methods
-          via the \textbf{Human-Centered AI-Human-Guided ML Compliance Matrix}
-          \item Case study applying the instrument
-          to \textbf{InsuML}, \\an Human-Guided ML tool for non-expert users
-        \end{enumerate}
-      \end{block}
+    \begin{column}{0.42\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.58, transform shape]
+
+        % ── Sky ──
+        \fill[white] (-4.5,3.2) rectangle (5.8,0.05);
+
+        % ── Water body ──
+        \shade[top color=UCblue!35, bottom color=UCblue!65]
+          (-4.5,0) rectangle (5.8,-4.3);
+
+        % ── Gentle wave line at the surface ──
+        \draw[UCblue!70, thick]
+          (-4.5,0) sin (-3.6,0.12) cos (-2.7,0)
+                   sin (-1.8,0.12) cos (-0.9,0)
+                   sin (0,0.12)    cos (0.9,0)
+                   sin (1.8,0.12)  cos (2.7,0)
+                   sin (3.6,0.12)  cos (4.5,0)
+                   sin (5.2,0.12)  cos (5.8,0);
+
+        % ── Submerged mass (faceted), shifted left ──
+        \shade[top color=UCblue!45, bottom color=UCblue!20, opacity=0.85]
+          (-2.3,0) -- (-3.9,-1.1) -- (-3.3,-2.2) -- (-4.1,-3.4)
+          -- (-1.7,-2.9) -- (-0.8,-4.1) -- (0.3,-2.9) -- (2.4,-3.3)
+          -- (1.5,-1.9) -- (2.1,-0.8) -- (0.7,0) -- cycle;
+        \draw[UCblue!80!black, thin, dashed, opacity=0.6]
+          (-2.3,0) -- (-3.9,-1.1) -- (-3.3,-2.2) -- (-4.1,-3.4)
+          -- (-1.7,-2.9) -- (-0.8,-4.1) -- (0.3,-2.9) -- (2.4,-3.3)
+          -- (1.5,-1.9) -- (2.1,-0.8) -- (0.7,0) -- cycle;
+
+        % ── Emerged tip: crisp facets, shifted left ──
+        \fill[white]
+          (-2.1,0) -- (-2.3,0.75) -- (-1.55,0.55)
+          -- (-1.05,2.15) -- (-0.45,1.35) -- (0.05,2.55)
+          -- (0.45,0.95) -- (0.7,0) -- cycle;
+        \fill[UCblue!12]
+          (-2.1,0) -- (-2.3,0.75) -- (-1.55,0.55) -- (-1.05,2.15) -- (-0.45,1.35) -- (-0.45,0) -- cycle;
+        \fill[UCblue!20]
+          (-0.45,1.35) -- (0.05,2.55) -- (0.45,0.95) -- (0.7,0) -- (-0.45,0) -- cycle;
+        \draw[UCblue!75!black, thin]
+          (-2.1,0) -- (-2.3,0.75) -- (-1.55,0.55)
+          -- (-1.05,2.15) -- (-0.45,1.35) -- (0.05,2.55)
+          -- (0.45,0.95) -- (0.7,0) -- cycle;
+        \draw[UCblue!55, thin] (-1.55,0.55) -- (-1.05,2.15);
+        \draw[UCblue!55, thin] (-0.45,1.35) -- (0.05,2.55);
+        \draw[UCblue!55, thin] (-0.45,1.35) -- (-0.45,0);
+
+        % ── Faint reflection under the tip ──
+        \fill[UCblue!25, opacity=0.3]
+          (-2.1,0) -- (-2.3,-0.5) -- (-0.8,-1.3) -- (0.7,-0.5) -- (0.5,0) -- cycle;
+
+        % ── Title above ──
+        \node[font=\footnotesize\bfseries, UCblue!85!black,
+              anchor=north] at (-0.7,3.15) {AutoML today};
+
+        % ── Leader line + label: Predictive Performance (side, top) ──
+        \draw[UCgreen!55!black, thin] (-0.15,1.7) -- (2.2,1.9);
+        \node[font=\scriptsize\bfseries, UCgreen!45!black, align=left,
+              anchor=west] at (2.25,1.9) {Predictive\\Performance};
+
+        % ── Leader line + label: submerged list (side, mid-depth) ──
+        \draw[white, thin] (-1.0,-1.8) -- (2.4,-1.5);
+        \node[font=\scriptsize\bfseries, white, align=left,
+              anchor=west] at (2.45,-1.5)
+          {Transparency\\User Control\\Interpretability};
+
+        % ── "neglected" note, just below the list ──
+        \node[font=\footnotesize\bfseries\itshape, white, align=left,
+              anchor=west] at (2.45,-2.75) {(neglected)};
+
+      \end{tikzpicture}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{The Evaluation Gap} \small
+  \begin{itemize}
+    \item \textbf{Gap in Human-Computer Interaction (HCI)}:\\
+      Existing heuristic inspection instruments are limited to
+      classical usability criteria and do \emph{not} incorporate
+      HCAI criteria
+  \end{itemize}
+  \vspace{1mm}
   \begin{center}
-    \begin{tikzpicture}[scale=0.80, transform shape]
+    \begin{tikzpicture}[scale=0.75, transform shape]
       % Left: HCI Inspection
       \node[rectangle, draw=UCblue, fill=UCbluePale, minimum width=3.4cm,
             minimum height=2.8cm, text width=3.2cm, align=center,
@@ -182,13 +239,22 @@
       % Bridge
       \node[rectangle, draw=UCblue, fill=UCblue, text=white,
             minimum width=5.4cm, minimum height=0.9cm,
-            rounded corners=0.2cm, font=\small\bfseries] (matrix) at (4.75,-2.8)
+            rounded corners=0.2cm, font=\small\bfseries] (matrix) at (4.75,-2.5)
             {HCAI-HGML Compliance Matrix};
       \draw[->, thick, UCblue!80, dashed] (matrix.north) -- (gap.south);
       \draw[thick, UCblue!50, dashed] (matrix.west) -- +(-2.6,0) |- (hci.south);
       \draw[thick, UCgreen!50, dashed] (matrix.east) -- +(2.6,0) |- (hcai.south);
     \end{tikzpicture}
   \end{center}
+  \vspace{1mm}
+  \begin{block}{Contributions} \scriptsize
+    \begin{enumerate}
+      \item Extension of heuristic inspection methods
+      via the \textbf{Human-Centered AI-Human-Guided ML Compliance Matrix}
+      \item Case study applying the instrument
+      to \textbf{InsuML}, an Human-Guided ML tool for non-expert users
+    \end{enumerate}
+  \end{block}
 \end{frame}
 
 \iffalse
