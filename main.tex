@@ -302,11 +302,13 @@
       \end{itemize}
     \end{block}
     \vspace{3mm}
-    \textbf{Human control criteria}:
+    \begin{exampleblock}{To evaluate}
+        \textbf{Human control criteria}:
     ease of use · pipeline configurability · information interpretability\\[2mm]
     \textbf{Automation criteria}:
     data type detection · data cleaning · feature engineering ·
     model training · hyperparameter tuning · model validation
+    \end{exampleblock}
   \end{minipage}%
   \begin{minipage}{0.5\textwidth}
     \centering
@@ -410,101 +412,56 @@
 \section{The HCAI-HGML Inspection Instrument}
 % ══════════════════════════════════════════════════════════════════════════════
 
-\begin{frame}{Dimensions and Criteria} \small
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Human Control --- 3 Criteria}
-        \begin{itemize}\scriptsize
-          \item \textbf{Ease of use}: no AI expertise, no programming
-          \item \textbf{Pipeline configurability}: customize decisions,
-                no code intervention
-          \item \textbf{Information interpretability}: accessible,
-                non-technical formats
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Computer Automation --- 6 Criteria}
-        \begin{itemize}\scriptsize
-          \item \textbf{Data type detection}: automatic identification
-          \item \textbf{Data cleaning}: missing values, duplicates
-          \item \textbf{Feature engineering}: generate, transform, select
-          \item \textbf{Model training}: architecture + optimization
-          \item \textbf{Hyperparameter tuning}: automatic search
-          \item \textbf{Model validation}: cross-validation, reporting
-        \end{itemize}
-      \end{block}
-    \end{column}
-  \end{columns}
+\begin{frame}{Reference Matrix: Expected Behavior per Phase} \scriptsize
+  \begin{block}{Key Design Decision}\scriptsize
+    Human control is scored via \textbf{3 criteria} (ease of use, configurability,
+    interpretability); the \textbf{6 automation criteria} (see Background)
+    collapse into a single $A_{\text{global}}$ per phase --- avoiding
+    penalizing tools for criteria structurally inapplicable to a given stage.
+  \end{block}
   \vspace{2mm}
-  \begin{exampleblock}{Key Design Decision} \scriptsize
-    The six automation criteria are collapsed into a single
-    $A_{\text{global}}$ per phase to avoid penalizing tools for criteria that are structurally inapplicable to a given stage.
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}{Theoretical Responsibility Distribution} \small
+  {\tiny \textit{Each phase describes the expected allocation of decisions in a
+  fully HCAI-compliant tool --- the benchmark against which any tool under
+  evaluation is contrasted.}}
+  \vspace{1mm}
   \centering
-  \begin{tikzpicture}[scale=0.9, transform shape,
-      phase/.style={rectangle, rounded corners=0.15cm, draw=UCgray,
-                     minimum width=4.6cm, minimum height=2.1cm,
-                     text width=4.2cm, align=left, font=\small},
-      colhead/.style={font=\bfseries\normalsize, align=center}]
-
-    % Column headers
-    \node[colhead] at (0,5.3)  {Data Use};
-    \node[colhead] at (5.2,5.3){Model Development};
-    \node[colhead] at (10.4,5.3){Model Interpretation};
-
-    % ── Data Use column ──
-    \node[phase, fill=UCbluePale] at (0,3.7) {
-      \centering\textbf{Variable selection}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Prioritize variables, flag missing data\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Infer features, auto-impute};
-    \node[phase, fill=UCbluePale] at (0,1.5) {
-      \centering\textbf{Variable requirements}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Set inclusion/exclusion rules\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Enforce rules, validate data};
-    \node[phase, fill=UCbluePale] at (0,-0.7) {
-      \centering\textbf{Instance selection}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Define subpopulations, outliers\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Auto split, balance, cross-validate};
-
-    % ── Model Development column ──
-    \node[phase, fill=UCgreen!12] at (5.2,3.7) {
-      \centering\textbf{Model selection}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Indicate preferred model types\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Build \& evaluate candidates};
-    \node[phase, fill=UCgreen!12] at (5.2,1.5) {
-      \centering\textbf{Parameter settings}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Specify domain-informed values\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Search \& optimize hyperparameters};
-    \node[phase, fill=UCgreen!12] at (5.2,-0.7) {
-      \centering\textbf{Solution design}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Modify preprocessing, pipeline\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Construct full pipelines};
-
-    % ── Model Interpretation column ──
-    \node[phase, fill=UCorange!12] at (10.4,3.7) {
-      \centering\textbf{Model assessment}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Request specific metrics\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Compute metrics, diagnostics};
-    \node[phase, fill=UCorange!12] at (10.4,1.5) {
-      \centering\textbf{Model comparison}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Select models to compare\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Manage experiments, visualize};
-    \node[phase, fill=UCorange!12] at (10.4,-0.7) {
-      \centering\textbf{Parameter comparison}\\[1mm]
-      \raggedright\textcolor{UCblue}{\textbf{HC:}} Identify parameters to vary\\
-      \textcolor{UCgreen!70!black}{\textbf{CA:}} Run ablations, report impact};
-  \end{tikzpicture}
-
-  \vspace{2mm}
-  {\small \textcolor{UCblue}{\textbf{HC}} = Human Control \quad
-   \textcolor{UCgreen!70!black}{\textbf{CA}} = Computer Automation}
+  \renewcommand{\arraystretch}{1.15}
+  \rowcolors{2}{white}{white}
+  \begin{tabular}{l p{5.0cm} p{5.0cm}}
+    \toprule
+    \textbf{Pipeline Phase} & \textbf{Human Control (expected)} & \textbf{Automation (expected)} \\
+    \midrule
+    \rowcolor{UCbluePale}
+    \multicolumn{3}{l}{\textbf{Data Use}} \\
+    \rowcolor{UCbluePale}
+    Variable selection & Prioritize variables, flag missing data & Infer features, auto-impute \\
+    \rowcolor{UCbluePale}
+    Variable requirements & Set inclusion/exclusion rules & Enforce rules, validate data \\
+    \rowcolor{UCbluePale}
+    Instance selection & Define subpopulations, outliers & Auto split, balance, cross-validate \\
+    \midrule
+    \rowcolor{UCgreen!12}
+    \multicolumn{3}{l}{\textbf{Model Development}} \\
+    \rowcolor{UCgreen!12}
+    Model selection & Indicate preferred model types & Build \& evaluate candidates \\
+    \rowcolor{UCgreen!12}
+    Parameter settings & Specify domain-informed values & Search \& optimize hyperparameters \\
+    \rowcolor{UCgreen!12}
+    Solution design & Modify preprocessing, pipeline & Construct full pipelines \\
+    \midrule
+    \rowcolor{UCorange!12}
+    \multicolumn{3}{l}{\textbf{Model Interpretation}} \\
+    \rowcolor{UCorange!12}
+    Model assessment & Request specific metrics & Compute metrics, diagnostics \\
+    \rowcolor{UCorange!12}
+    Model comparison & Select models to compare & Manage experiments, visualize \\
+    \rowcolor{UCorange!12}
+    Parameter comparison & Identify parameters to vary & Run ablations, report impact \\
+    \bottomrule
+  \end{tabular}
 \end{frame}
 
-\begin{frame}{The HCAI-HGML Compliance Matrix} \small
+\begin{frame}{Compliance Matrix: Scoring \& Interpretation} \small
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
       \begin{block}{Structure}

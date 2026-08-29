@@ -36,11 +36,12 @@
     \item Frase gancho: instrumento para evaluar ML guiado por humanos bajo HCAI + caso real
 \end{itemize}
 
-\section{MOTIVATION \tiempo{3 min}}
+\section{MOTIVATION \tiempo{2:25 min}}
 
 \subsection*{1.1 Research Context \tiempo{70s}}
 \begin{itemize}
-    \item No técnicos + ML $\rightarrow$ AutoML democratiza, PERO prioriza rendimiento y descuida transparencia/control/interpretación (iceberg: punta = rendimiento, sumergido = descuidado)
+    \item No técnicos + ML $\rightarrow$ necesitan aplicar ML sin formación en ciencia de datos
+    \item AutoML democratiza, PERO prioriza rendimiento y descuida transparencia/control/interpretación (iceberg: punta = rendimiento, sumergido = descuidado)
     \item HCAI $\rightarrow$ usuario activo, no receptor pasivo
 \end{itemize}
 
@@ -65,6 +66,7 @@
 
 \subsection*{2.2 HGML \tiempo{55s}}
 \begin{itemize}
+    \item HGML = traducción práctica de los principios de HCAI al dominio del ML
     \item Gil et al.: experto de dominio = activo, no estorbo
     \item 3 bloques $\times$ 3 fases: Data Use / Model Development / Model Interpretation
     \item Problema: pocas propuestas llegan a software real
@@ -73,27 +75,24 @@
 \subsection*{2.3 Inspección heurística en HCI \tiempo{40s}}
 \begin{itemize}
     \item 3--5 expertos, sin usuarios reales
-    \item Severidad vs. checklist puntuado
+    \item Severidad (prioriza problemas) vs. checklist puntuado (puntúa criterios, comparable)
     \item Limitación: solo usabilidad clásica $\rightarrow$ entra nuestra propuesta
+    \item Base metodológica sobre la que se construye el instrumento
 \end{itemize}
 
 \section{INSTRUMENTO \tiempo{3 min}}
 
-\subsection*{3.1 Dimensiones y criterios \tiempo{70s}}
+\subsection*{3.1 Reference Matrix \tiempo{100s}}
 \begin{itemize}
-    \item Control humano (3): facilidad de uso / configurabilidad / interpretabilidad
-    \item Automatización (6): tipos de dato, limpieza, features, entrenamiento, hiperparámetros, validación
-    \item \clave{Decisión clave}: automatización colapsa en $A_{\text{global}}$ por fase (evita penalizar lo no aplicable)
-\end{itemize}
-
-\subsection*{3.2 Tabla de responsabilidad teórica \tiempo{55s}}
-\begin{itemize}
-    \item Referencia: qué le toca al usuario / qué al sistema, fase a fase
+    \item Mismo esqueleto que el checklist heurístico puntuado: criterios de usabilidad clásica $\rightarrow$ criterios HCAI
+    \item Control humano (3): facilidad de uso / configurabilidad / interpretabilidad --- ya vistos
+    \item \clave{Decisión clave}: automatización (6) colapsa en $A_{\text{global}}$ por fase (evita penalizar lo no aplicable)
+    \item Tabla de referencia: qué le toca al usuario / qué al sistema, fase a fase
     \item Solo 2--3 ejemplos en voz: variable selection, model selection, model assessment
     \item ``Misma lógica para las 9 fases''
 \end{itemize}
 
-\subsection*{3.3 La Matriz de Cumplimiento \tiempo{55s}}
+\subsection*{3.2 Compliance Matrix: Scoring \tiempo{80s}}
 \begin{itemize}
     \item Filas = 9 fases $\cdot$ Columnas = 3 control humano + $A_{\text{global}}$
     \item Escala: 0 / 0.25 / 0.5 / 0.75 / 1
@@ -101,10 +100,11 @@
     \item 4 cuadrantes (óptimo si ambas $>0.5$) + distancia al punto ideal $(1,1)$
 \end{itemize}
 
-\section{CASO INSUML \tiempo{3:30 min}}
+\section{CASO INSUML \tiempo{3:25 min}}
 
 \subsection*{4.1 Tool overview \tiempo{80s}}
 \begin{itemize}
+    \item Premisa de diseño: conocimiento experto se integra explícitamente, no lo desplaza la automatización
     \item Motor AutoML + GUI guiada, sin programar
     \item Captura: A) navegación por pestañas $\cdot$ B) rol de variables $\cdot$ C) ayuda contextual
     \item Interacción: secuencial bidireccional / resumen pre-entrenamiento / revelado progresivo

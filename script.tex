@@ -26,17 +26,19 @@
 \textbf{y en la presentaci\'on Beamer asociada.}
 \medskip
 \noindent
-Tiempos orientativos por bloque de diapositivas (no cuentan las divisorias de secci\'on). Suman aproximadamente 15 minutos.
+Tiempos orientativos por bloque de diapositivas (no cuentan las divisorias de secci\'on). Suman aproximadamente 13 minutos y 55 segundos, dentro del límite de 15 minutos.
 
 \section*{PORTADA \hfill \normalfont\small $\sim$20s}
 \indicacion{Dejar la portada visible unos segundos, sin prisa.}
 Hola a todos. Mi nombre es Diego García-Prieto, y este trabajo lo firmamos junto con Camilo Palazuelos y Rafael Duque, del departamento de Matemáticas, Estadística y Computación de la Universidad de Cantabria. En este trabajo presentamos un instrumento para evaluar herramientas de Machine Learning guiado por humanos bajo criterios de IA centrada en el ser humano, además de un caso real donde lo hemos aplicado.
 
-\section{MOTIVATION \hfill \normalfont\small $\sim$3 min}
+\section{MOTIVATION \hfill \normalfont\small $\sim$2:25 min}
 
 \subsection{Research Context \hfill \normalfont\small $\sim$70s}
 \indicacion{Recorrer los tres puntos de arriba a abajo. Al llegar al segundo punto, señalar el iceberg a la derecha: la punta visible es el rendimiento predictivo; la parte sumergida, lo que la automatización descuida.}
-Vamos a situar el contexto. Cada vez más profesionales no técnicos necesitan aplicar Machine Learning sin haberse formado en ciencia de datos. Las herramientas AutoML nacieron para responder a eso, automatizando tareas como la ingeniería de características, la selección de modelos o la optimización de hiperparámetros. La democratización del ML. El problema es que esa automatización se ha orientado casi en exclusiva a maximizar el rendimiento predictivo, y eso ha dejado en un segundo plano aspectos igual de importantes: la transparencia del proceso, el control del usuario y la interpretación de los resultados.
+Vamos a situar el contexto. Cada vez más profesionales no técnicos necesitan aplicar Machine Learning sin haberse formado en ciencia de datos.
+
+Las herramientas AutoML nacieron para responder a eso, automatizando tareas como la ingeniería de características, la selección de modelos o la optimización de hiperparámetros. La democratización del ML. El problema es que esa automatización se ha orientado casi en exclusiva a maximizar el rendimiento predictivo, y eso ha dejado en un segundo plano aspectos igual de importantes: la transparencia del proceso, el control del usuario y la interpretación de los resultados.
 
 Frente a eso ha ido ganando peso el paradigma de la IA Centrada en el Humano (HCAI), que sitúa al usuario en el centro del diseño: no como receptor pasivo de un resultado, sino como participante activo con capacidad de control. Sin embargo, muy pocas herramientas AutoML concretas se han evaluado de forma sistemática bajo criterios HCAI.
 
@@ -73,24 +75,18 @@ Por último, un repaso rápido a los métodos de inspección heurística en HCI,
 
 \section{THE HCAI-HGML INSPECTION INSTRUMENT \hfill \normalfont\small $\sim$3 min}
 
-\subsection{Dimensions and Criteria \hfill \normalfont\small $\sim$70s}
-Vamos ya con el instrumento en sí. Lo que hacemos es coger la estructura del checklist heurístico puntuado, que ya conocéis, y sustituir sus criterios de usabilidad clásica por los criterios de control humano y automatización de HCAI que os acabo de presentar.
-
-\indicacion{Columna izquierda: control humano. Columna derecha: automatización.}
-Así que tenemos, por un lado, los tres criterios de control humano: facilidad de uso —sin necesitar experiencia en IA ni programar—, configurabilidad del pipeline —personalizar decisiones sin tocar código— e interpretabilidad de la información —resultados en formatos accesibles para no técnicos. Y por otro, los seis de automatización: detección de tipos de dato, limpieza, ingeniería de características, entrenamiento, optimización de hiperparámetros y validación del modelo.
+\subsection{Reference Matrix: Expected Behavior per Phase \hfill \normalfont\small $\sim$100s}
+Vamos ya con el instrumento en sí. Lo que hacemos es coger la estructura del checklist heurístico puntuado, que ya conocéis, y sustituir sus criterios de usabilidad clásica por los de control humano y automatización de HCAI que os presenté en Background.
 
 \indicacion{Señalar el recuadro de la decisión de diseño.}
-Aquí quiero destacar una decisión de diseño importante: en la matriz final, los seis criterios de automatización se colapsan en una única puntuación por fase, que llamamos $A_{\text{global}}$. ¿Por qué? Porque no todos los criterios de automatización tienen sentido en todas las fases, y si los mantuviéramos separados estaríamos penalizando artificialmente a una herramienta por la ausencia de un criterio que ni siquiera es aplicable en ese punto del pipeline.
+Aquí quiero destacar una decisión de diseño importante: el control humano se puntúa con los tres criterios que ya conocéis —facilidad de uso, configurabilidad e interpretabilidad—, pero los seis de automatización se colapsan en una única puntuación por fase, que llamamos $A_{\text{global}}$. ¿Por qué? Porque no todos esos seis criterios tienen sentido en todas las fases. Por ejemplo, la detección de tipos de dato no significa nada en la fase de comparación de modelos, o la optimización de hiperparámetros no aplica todavía en la selección de variables. Si los mantuviéramos separados, estaríamos puntuando como ausencia real algo que en realidad es estructuralmente inaplicable en esa fase, penalizando injustamente a la herramienta.
 
-\subsection{Theoretical Responsibility Distribution \hfill \normalfont\small $\sim$55s}
-Para poder puntuar de forma consistente, necesitamos un punto de referencia: qué se espera exactamente del usuario y qué del sistema en cada una de las nueve fases del pipeline. Eso es justo lo que veis en esta tabla.
-
-\indicacion{Recorrer brevemente las tres columnas: Data Use, Model Development, Model Interpretation.}
-Las nueve fases se agrupan en los tres bloques que ya hemos visto. En uso de datos, por ejemplo, en selección de variables el usuario debería poder priorizar variables y señalar datos ausentes, mientras que el sistema infiere características y hace imputación automática. En desarrollo del modelo, en selección de modelo el usuario indica tipos de modelo preferidos y el sistema construye y evalúa candidatos. Y en interpretación, por ejemplo en evaluación del modelo, el usuario pide métricas concretas y el sistema las calcula y reporta automáticamente. La misma lógica se aplica a las nueve fases.
+\indicacion{Bajar a la tabla de referencia; recorrer brevemente los tres bloques de color: Data Use, Model Development, Model Interpretation.}
+Para poder puntuar de forma consistente, necesitamos un punto de referencia: qué se espera exactamente del usuario y qué del sistema en cada una de las nueve fases del pipeline. Eso es justo lo que veis en esta tabla. En uso de datos, por ejemplo, en selección de variables el usuario debería poder priorizar variables y señalar datos ausentes, mientras que el sistema infiere características y hace imputación automática. En desarrollo del modelo, en selección de modelo el usuario indica tipos de modelo preferidos y el sistema construye y evalúa candidatos. Y en interpretación, por ejemplo en evaluación del modelo, el usuario pide métricas concretas y el sistema las calcula y reporta automáticamente. La misma lógica se aplica a las nueve fases.
 
 Esta tabla no es solo descriptiva: es el patrón contra el que después contrastamos el comportamiento observado de cualquier herramienta real.
 
-\subsection{The HCAI-HGML Compliance Matrix \hfill \normalfont\small $\sim$55s}
+\subsection{Compliance Matrix: Scoring \& Interpretation \hfill \normalfont\small $\sim$80s}
 Con ese patrón de referencia, construimos la matriz de cumplimiento. En las filas van las nueve fases, en las columnas los tres criterios de control humano más la automatización global por fase.
 
 \indicacion{Señalar la barra de gradiente.}
@@ -104,7 +100,7 @@ Estas dos puntuaciones, entre 0 y 1, sitúan a la herramienta en uno de cuatro c
 
 Con el instrumento ya definido, vamos a ver cómo lo hemos aplicado a un caso real.
 
-\section{CASE STUDY: INSUML \hfill \normalfont\small $\sim$3:30 min}
+\section{CASE STUDY: INSUML \hfill \normalfont\small $\sim$3:25 min}
 
 \subsection{InsuML --- Tool Overview \& GUI \hfill \normalfont\small $\sim$80s}
 InsuML es la herramienta que hemos desarrollado nosotros mismos, actualmente en desarrollo activo, pensada específicamente para usuarios sin experiencia en IA. La premisa de diseño es que el conocimiento experto es un activo que hay que integrar explícitamente en el proceso, no algo que la automatización deba desplazar. Por eso combina un motor AutoML con una interfaz gráfica guiada donde cada decisión del pipeline es visible y controlable, sin necesidad de programar en ningún momento.
