@@ -36,7 +36,7 @@ Hola a todos. Mi nombre es Diego García-Prieto, y este trabajo lo firmamos junt
 
 \subsection{Research Context \hfill \normalfont\small $\sim$70s}
 \indicacion{Recorrer los tres puntos de arriba a abajo. Al llegar al segundo punto, señalar el iceberg a la derecha: la punta visible es el rendimiento predictivo; la parte sumergida, lo que la automatización descuida.}
-Vamos a situar el contexto. Cada vez más profesionales no técnicos necesitan aplicar Machine Learning sin haberse formado en ciencia de datos.
+Vamos a situar el contexto. Cada vez más profesionales sin conocimientos en Data Science necesitan aplicar Machine Learning a sus investigaciones.
 
 Las herramientas AutoML nacieron para responder a eso, automatizando tareas como la ingeniería de características, la selección de modelos o la optimización de hiperparámetros. La democratización del ML. El problema es que esa automatización se ha orientado casi en exclusiva a maximizar el rendimiento predictivo, y eso ha dejado en un segundo plano aspectos igual de importantes: la transparencia del proceso, el control del usuario y la interpretación de los resultados.
 
@@ -58,7 +58,7 @@ De ahí nuestras dos contribuciones: 1) extender los métodos de inspección heu
 \indicacion{Señalar primero el bloque de texto, después el diagrama de cuadrantes a la derecha.}
 Para poder construir un instrumento así, necesitamos 3 piezas:
 
-El marco HCAI de Shneiderman parte de una premisa clara: la IA debe amplificar las capacidades humanas, no sustituirlas. Y para llevar esa premisa a la práctica, rompe con la intuición clásica: normalmente pensamos que más automatización significa menos control humano, como si fueran los extremos de una misma balanza. Shneiderman propone tratarlos como dos ejes independientes. Esto abre la puerta a un cuadrante, el de arriba a la derecha, donde conviven alta automatización y alto control humano al mismo tiempo. Ese es el espacio de diseño que perseguimos.
+El marco HCAI de Shneiderman parte de una premisa clara: la IA debe amplificar las capacidades humanas, no sustituirlas. Y para llevar esa premisa a la práctica, rompe con la intuición clásica: normalmente pensamos que más automatización significa menos control humano, como si fueran los extremos de una misma balanza. Shneiderman propone tratarlos como dos ejes independientes. Esto abre la puerta a un cuadrante, el de arriba a la derecha, donde conviven alta automatización y alto control humano al mismo tiempo.
 
 Para poder evaluarlo, el control humano se descompone en tres criterios —facilidad de uso, configurabilidad del pipeline e interpretabilidad de la información— y la automatización en seis, que veis listados aquí abajo: detección de tipos de datos, limpieza, ingeniería de características, entrenamiento, optimización de hiperparámetros y validación del modelo. Los desarrollaremos en detalle en un momento.
 
@@ -71,12 +71,12 @@ Este marco organiza la participación del usuario en tres grandes bloques que co
 El problema, de nuevo, es que pocas propuestas de HGML llegan a convertirse en software real accesible para usuarios sin formación en IA. Se quedan en el papel.
 
 \subsection{Heuristic Inspection Methods in HCI \hfill \normalfont\small $\sim$40s}
-Por último, un repaso rápido a los métodos de inspección heurística en HCI, que son la base metodológica sobre la que construimos. Son técnicas de evaluación por expertos, normalmente entre tres y cinco, que analizan una interfaz sin necesidad de usuarios reales. Existen dos variantes clásicas: 1) la evaluación heurística con valoración de severidad, que prioriza problemas de usabilidad según su impacto; y 2) el checklist heurístico puntuado, que convierte los principios en criterios evaluables numéricamente, permitiendo comparar herramientas de forma agregada.
+Por último, un repaso rápido a los métodos de inspección heurística en HCI. Son técnicas de evaluación por expertos, normalmente entre tres y cinco, que analizan una interfaz sin necesidad de usuarios reales. Existen dos variantes clásicas: 1) la evaluación heurística con valoración de severidad, que prioriza problemas de usabilidad según su impacto; y 2) el checklist heurístico puntuado, que convierte los principios en criterios evaluables numéricamente, permitiendo comparar herramientas de forma agregada.
 
 \section{THE HCAI-HGML INSPECTION INSTRUMENT \hfill \normalfont\small $\sim$3 min}
 
 \subsection{Reference Matrix: Expected Behavior per Phase \hfill \normalfont\small $\sim$100s}
-Vamos ya con el instrumento en sí. Lo que hacemos es coger la estructura del checklist heurístico puntuado, que ya conocéis, y sustituir sus criterios de usabilidad clásica por los de control humano y automatización de HCAI que os presenté en Background.
+Vamos ya con el instrumento en sí. Lo que hacemos es coger la estructura del checklist heurístico puntuado, que ya conocéis, y sustituir sus criterios de usabilidad clásica por los de control humano y automatización de HCAI que os presenté en Background. Evaluamos los criterios HCAi en las 9 fases de HGML.
 
 \indicacion{Señalar el recuadro de la decisión de diseño.}
 Aquí quiero destacar una decisión de diseño importante: el control humano se puntúa con los tres criterios que ya conocéis —facilidad de uso, configurabilidad e interpretabilidad—, pero los seis de automatización se colapsan en una única puntuación por fase, que llamamos $A_{\text{global}}$. ¿Por qué? Porque no todos esos seis criterios tienen sentido en todas las fases. Por ejemplo, la detección de tipos de dato no significa nada en la fase de comparación de modelos, o la optimización de hiperparámetros no aplica todavía en la selección de variables. Si los mantuviéramos separados, estaríamos puntuando como ausencia real algo que en realidad es estructuralmente inaplicable en esa fase, penalizando injustamente a la herramienta.
@@ -87,7 +87,7 @@ Para poder puntuar de forma consistente, necesitamos un punto de referencia: qu�
 Esta tabla no es solo descriptiva: es el patrón contra el que después contrastamos el comportamiento observado de cualquier herramienta real.
 
 \subsection{Compliance Matrix: Scoring \& Interpretation \hfill \normalfont\small $\sim$80s}
-Con ese patrón de referencia, construimos la matriz de cumplimiento. En las filas van las nueve fases, en las columnas los tres criterios de control humano más la automatización global por fase.
+Con ese patrón de referencia, construimos la matriz de cumplimiento. En las filas van las nueve fases HGML, en las columnas los tres criterios HCAI de control humano más la automatización global por fase.
 
 \indicacion{Señalar la barra de gradiente.}
 Cada celda se puntúa en esta escala ordinal de cinco niveles, de 0, ausente, a 1, completo, pasando por 0.25, 0.5 y 0.75.
@@ -142,7 +142,7 @@ Como todo trabajo, tiene limitaciones que queremos reconocer abiertamente. La pr
 De cara al futuro, la prioridad más inmediata es precisamente eso: estudios de usabilidad formales con evaluadores independientes, y en paralelo, integrar explicabilidad, implementar la comparación de parámetros y extender la herramienta a datos heterogéneos como texto, imágenes o series temporales.
 
 \section{CONCLUSIONS \hfill \normalfont\small $\sim$45s}
-Para cerrar. Este trabajo aporta dos cosas relacionadas entre sí: por un lado, la Matriz de Cumplimiento HCAI-HGML, que extiende los checklists heurísticos clásicos con dimensiones de HCAI a lo largo de nueve fases del pipeline, sin necesitar usuarios reales para aplicarse; y por otro, un caso de estudio con InsuML.
+Para cerrar. Este trabajo aporta dos cosas relacionadas entre sí: por un lado, la Matriz de Cumplimiento HCAI-HGML, que extiende los checklists heurísticos clásicos con criterios HCAI a lo largo de nueve fases HGML del pipeline, sin necesitar usuarios reales para aplicarse; y por otro, un caso de estudio con InsuML.
 
 \indicacion{Señalar, de izquierda a derecha, las cuatro insignias de resultados.}
 InsuML obtiene $S_{HC} = 0.64$ en control humano, $S_A = 0.86$ en automatización y una distancia al punto ideal de $D = 0.39$, situándose en el cuadrante óptimo, con margen de mejora claro en configurabilidad y en comparación de parámetros.
